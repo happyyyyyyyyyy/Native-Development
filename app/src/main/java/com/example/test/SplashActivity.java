@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    long delayTime = 10000L; //스플래시 화면 지연 시간 정의
+    long delayTime = 5000L; //스플래시 화면 지연 시간 정의
     int delayCnt = 1;
     TextView text_loading;
     @Override
