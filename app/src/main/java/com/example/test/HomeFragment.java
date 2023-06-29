@@ -2,11 +2,6 @@ package com.example.test;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,30 +10,59 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
+import com.example.test.room.DogData;
+import com.example.test.room.DogDataDatabase;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 
 public class HomeFragment extends Fragment implements onListItemSelectedInterface {
+    private DogDataDatabase db;
     RecyclerView recyclerView;
     Adapter adapter;
     Context ct;
+    Call<ArrayList<DogDto>> call;
+    ArrayList<DogDto> arrayList;
+
+    DogDto dogInfo;
+    ArrayList<DogDto> result;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         ct = container.getContext();
-
+        db = Room.databaseBuilder(ct, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
         recyclerView = v.findViewById(R.id.dog_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)); // 상하 스크롤
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)); // 좌우 스크롤
 
         adapter = new Adapter(ct, this);
-        for(int i = 0; i<100; i++){
-            DogDto dogInfo = new DogDto("Affenpinscher"+i, "Small rodent hunting, lapdog", 6, 29,
+
+
+        //room에 저장된 dogData를 recyclerView에 set
+        List<DogData> dogDataList = db.getDogDao().getAll(); //DB에 있는 Data를 List에 저장
+        int i =0;
+        //for문을 통해 DogDto 객체에 저장
+        for(DogData one : dogDataList){
+            DogDto dogInfo = new DogDto(one.id, one.name, one.bredFor,
                     "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", 12, false, R.drawable.unselected_bookmark_icon, i);
-            adapter.setArrayData(dogInfo);
+            i++;
+            adapter.setArrayData(dogInfo); //adapter에 set
         }
+//        for(int i = 0; i<100; i++){
+//            DogDto dogInfo = new DogDto(i, "Affenpinscher"+i, "Small rodent hunting, lapdog",
+//                    "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", 12, false, R.drawable.unselected_bookmark_icon, i);
+//            adapter.setArrayData(dogInfo);
+//        }
 
         recyclerView.setAdapter(adapter);
 

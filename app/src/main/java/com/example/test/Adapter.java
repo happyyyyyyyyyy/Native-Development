@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private ArrayList<DogDto> arrayList;
+    private ArrayList<DogDto> arrayList2;
 
     private onListItemSelectedInterface mListener;
     Context mContext;
     public Adapter(Context context, onListItemSelectedInterface listener){
         this.mContext = context;
         this.mListener = listener;
-        arrayList = new ArrayList<>();
+        arrayList2 = new ArrayList<>();
     }
 
     @NonNull
@@ -36,23 +36,27 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     //ViewHolder의 데이터 설정
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) { //position 값 -> 보여지는 데이터의 위치.
-        Log.d("TAG", "위치 " + arrayList.get(position).getName());
-        holder.text_name.setText(arrayList.get(position).getName());
-        holder.text_bred.setText(arrayList.get(position).getBred_for());
-        holder.button.setImageResource(arrayList.get(position).getBookmark_img());
-        Log.d("TAG", "북마크 이미지 현재 " + arrayList.get(position).getBookmark_img());
+        Log.d("TAG", "위치 " + arrayList2.get(position).getName());
+        holder.text_name.setText(arrayList2.get(position).getName());
+        holder.text_bred.setText(arrayList2.get(position).getBred_for());
+        holder.button.setImageResource(arrayList2.get(position).getBookmark_img());
+        Log.d("TAG", "북마크 이미지 현재 " + arrayList2.get(position).getBookmark_img());
 
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return arrayList2.size();
     }
 
     public void setArrayData(DogDto dogInfo){
-        arrayList.add(dogInfo);
-//        for(DogDto item:arrayList){
-//            Log.d("TAG", "이름: " + item.name +" 북마크 여부: " +  item.bookmark_check + " 품종: " +item.bred_for);
+        Log.d("TAG", "setArrayData: " + dogInfo.getName());
+        arrayList2.add(dogInfo);
+        Log.d("TAG", "setArrayData: " + arrayList2.get(0).getName());
+        Log.d("TAG", "setArrayData: " + arrayList2.size());
+
+//        for (int i = 0; i < arrayList2.size(); i++) {
+//            Log.d("TAG", "Element at index " + i + ": " + arrayList2.get(i).getName());
 //        }
     }
 
@@ -71,7 +75,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onItemSelected(v,getAdapterPosition(), arrayList, button, text_name);
+                    mListener.onItemSelected(v,getAdapterPosition(), arrayList2, button, text_name);
                     Log.d("test","포지션="+getAdapterPosition());
                     //여기서 textview넘겨주기
                 }

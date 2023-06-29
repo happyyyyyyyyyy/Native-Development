@@ -2,17 +2,19 @@ package com.example.test;
 
 public class DogDto {
     // 사진, 이름, 품종, Weight, Height, Temperament, Life span, BookMark_check
+    int id;
     String name;
     String bred_for;
-    int weight;
-    int height;
+    Weight weight;
+    Height height;
     String temperament;
     int lifeSpan;
     boolean bookmark_check;
     int bookmark_img;
     int index;
 
-    public DogDto(String name, String bred_for, int weight, int height, String temperament, int lifeSpan, boolean bookmark_check, int bookmark_img, int index){
+    public DogDto(int id, String name, String bred_for, String temperament, int lifeSpan, boolean bookmark_check, int bookmark_img, int index){
+        this.id = id;
         this.name = name;
         this.bred_for = bred_for;
         this.weight = weight;
@@ -22,6 +24,12 @@ public class DogDto {
         this.bookmark_check = bookmark_check;
         this.bookmark_img = bookmark_img;
         this.index = index;
+    }
+    public int getId(){
+        return id;
+    }
+    public void setId(int id){
+        this.id = id;
     }
     public String getName(){
         return name;
@@ -39,19 +47,19 @@ public class DogDto {
         this.bred_for = bred_for;
     }
 
-    public int getWeight(){
+    public Weight getWeight(){
         return weight;
     }
 
-    public void setWeight(int weight){
+    public void setWeight(Weight weight){
         this.weight = weight;
     }
 
-    public int getHeight(){
+    public Height getHeight(){
         return height;
     }
 
-    public void setHeight(int height){
+    public void setHeight(Height height){
         this.height = height;
     }
 
