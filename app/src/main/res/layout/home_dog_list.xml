@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginTop="5dp">
 
     <ImageView
-        android:id="@+id/dog_img"
+        android:id="@+id/dogImg"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/test"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/test"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
         android:text="멍멍이 이름"
         android:textSize="18dp"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toEndOf="@+id/dog_img"
+        app:layout_constraintBottom_toTopOf="@id/bred_for_text"
         app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bred_for_text" />
+        app:layout_constraintStart_toEndOf="@+id/dogImg"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/bred_for_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
         android:text="멍멍이 품종"
         android:textSize="18dp"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toEndOf="@+id/dog_img"
-        app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
-        app:layout_constraintTop_toBottomOf="@id/name_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:maxLines="1"
-        android:ellipsize="end"/>
+        app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
+        app:layout_constraintStart_toEndOf="@+id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/name_text" />
 
     <ImageButton
         android:id="@+id/bookmark_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#ffffff"
         android:src="@drawable/unselected_bookmark_icon"
-        android:background="#ffffff"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

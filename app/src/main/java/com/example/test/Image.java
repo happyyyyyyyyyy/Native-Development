@@ -1,7 +1,6 @@
 package com.example.test;
 
-public class Image
-{
+public class Image {
     private String width;
 
     private String id;
@@ -10,49 +9,40 @@ public class Image
 
     private String height;
 
-    public String getWidth ()
-    {
+    public String getWidth() {
         return width;
     }
 
-    public void setWidth (String width)
-    {
+    public void setWidth(String width) {
         this.width = width;
     }
 
-    public String getId ()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId (String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getUrl ()
-    {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl (String url)
-    {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public String getHeight ()
-    {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight (String height)
-    {
+    public void setHeight(String height) {
         this.height = height;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [width = "+width+", id = "+id+", url = "+url+", height = "+height+"]";
+    public String toString() {
+        return "ClassPojo [width = " + width + ", id = " + id + ", url = " + url + ", height = " + height + "]";
     }
 }

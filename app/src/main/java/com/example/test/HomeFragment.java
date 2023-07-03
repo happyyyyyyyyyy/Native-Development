@@ -1,13 +1,12 @@
 package com.example.test;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -25,15 +24,15 @@ import retrofit2.Call;
 
 
 public class HomeFragment extends Fragment implements onListItemSelectedInterface {
-    private DogDataDatabase db;
     RecyclerView recyclerView;
     Adapter adapter;
     Context ct;
     Call<ArrayList<DogDto>> call;
     ArrayList<DogDto> arrayList;
-
     DogDto dogInfo;
     ArrayList<DogDto> result;
+    private DogDataDatabase db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,11 +49,11 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
 
         //room에 저장된 dogData를 recyclerView에 set
         List<DogData> dogDataList = db.getDogDao().getAll(); //DB에 있는 Data를 List에 저장
-        int i =0;
+        int i = 0;
         //for문을 통해 DogDto 객체에 저장
-        for(DogData one : dogDataList){
+        for (DogData one : dogDataList) {
             DogDto dogInfo = new DogDto(one.id, one.name, one.bredFor,
-                    "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", 12, false, R.drawable.unselected_bookmark_icon, i);
+                    "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", "12", false, R.drawable.unselected_bookmark_icon, i);
             Image img = new Image();
             img.setUrl(one.img);
             dogInfo.setImage(img);
@@ -75,15 +74,14 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
 
     //RecyclerView 클릭 시 이벤트 처리 부분
     @Override
-    public void onItemSelected(View v, int position, ArrayList<DogDto> arrayList, ImageButton button, TextView text_name) {
+    public void onItemSelected(View v, int position, ArrayList<DogDto> arrayList) {
         Toast.makeText(getContext(), "position" + position, Toast.LENGTH_SHORT).show();
-        if(arrayList.get(position).getBookmark_check()){
+        if (arrayList.get(position).getBookmark_check()) {
             arrayList.get(position).setBookmark_img(R.drawable.unselected_bookmark_icon);
             Log.d("TAG", "북마크 이미지 제거 " + arrayList.get(position).getBookmark_img());
             arrayList.get(position).setBookmark_check(false);
             Toast.makeText(getContext(), "북마크 제거" + position, Toast.LENGTH_SHORT).show();
-        }
-        else{
+        } else {
             arrayList.get(position).setBookmark_img(R.drawable.selected_bookmark_icon);
             Log.d("TAG", "북마크 이미지 추가 " + arrayList.get(position).getBookmark_img());
             arrayList.get(position).setBookmark_check(true);
@@ -96,4 +94,13 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         //RecyclerView 업데이트
         adapter.notifyItemChanged(position);
     }
+
+    @Override
+    public void changeScreen(int id, String imgUrl) {
+        Intent intent = new Intent(ct, InformationActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("imgUrl", imgUrl);
+        startActivity(intent);
+    }
+
 }

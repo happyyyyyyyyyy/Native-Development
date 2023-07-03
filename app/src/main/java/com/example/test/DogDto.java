@@ -1,5 +1,7 @@
 package com.example.test;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DogDto {
     // 사진, 이름, 품종, Weight, Height, Temperament, Life span, BookMark_check
     Image image;
@@ -8,13 +10,16 @@ public class DogDto {
     String bred_for;
     Weight weight;
     Height height;
+
+    @SerializedName("temperament")
     String temperament;
-    int lifeSpan;
+    @SerializedName("life_span")
+    String lifeSpan;
     boolean bookmark_check;
     int bookmark_img;
     int index;
 
-    public DogDto(int id, String name, String bred_for, String temperament, int lifeSpan, boolean bookmark_check, int bookmark_img, int index){
+    public DogDto(int id, String name, String bred_for, String temperament, String lifeSpan, boolean bookmark_check, int bookmark_img, int index) {
         this.id = id;
         this.name = name;
         this.bred_for = bred_for;
@@ -26,87 +31,92 @@ public class DogDto {
         this.bookmark_img = bookmark_img;
         this.index = index;
     }
-    public Image getImage ()
-    {
+
+    public Image getImage() {
         return image;
     }
 
-    public void setImage (Image image)
-    {
+    public void setImage(Image image) {
         this.image = image;
     }
-    public int getId(){
+
+    public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getBred_for(){
+    public String getBred_for() {
         return bred_for;
     }
 
-    public void setBred_for(String bred_for){
+    public void setBred_for(String bred_for) {
         this.bred_for = bred_for;
     }
 
-    public Weight getWeight(){
+    public Weight getWeight() {
         return weight;
     }
 
-    public void setWeight(Weight weight){
+    public void setWeight(Weight weight) {
         this.weight = weight;
     }
 
-    public Height getHeight(){
+    public Height getHeight() {
         return height;
     }
 
-    public void setHeight(Height height){
+    public void setHeight(Height height) {
         this.height = height;
     }
 
-    public int getLifeSpan(){
+    public String getLifeSpan() {
         return lifeSpan;
     }
 
-    public void setLifeSpan(int lifeSpan){
+    public void setLifeSpan(String lifeSpan) {
         this.lifeSpan = lifeSpan;
     }
 
-    public String getTemperament(){
-        return name;
+    public String getTemperament() {
+        return temperament;
     }
 
-    public void setTemperament(String temperament){
+    public void setTemperament(String temperament) {
         this.temperament = temperament;
     }
 
-    public boolean getBookmark_check(){
+    public boolean getBookmark_check() {
         return bookmark_check;
     }
 
-    public void setBookmark_check(boolean bookmark_check){
+    public void setBookmark_check(boolean bookmark_check) {
         this.bookmark_check = bookmark_check;
     }
 
-    public int getBookmark_img(){
+    public int getBookmark_img() {
         return bookmark_img;
     }
-    public void setBookmark_img(int bookmark_img){
+
+    public void setBookmark_img(int bookmark_img) {
         this.bookmark_img = bookmark_img;
     }
-    public int getIndex(){
+
+    public int getIndex() {
         return index;
     }
-    public void setIndex(int index){
+
+    public void setIndex(int index) {
         this.index = index;
     }
 }

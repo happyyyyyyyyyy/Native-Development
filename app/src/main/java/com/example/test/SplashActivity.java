@@ -21,15 +21,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
-    private DogDataDatabase db;
-    long delayTime = 5000L; //스플래시 화면 지연 시간 정의
+    long delayTime = 2000L; //스플래시 화면 지연 시간 정의
     int delayCnt = 1;
     TextView text_loading;
-
     Call<ArrayList<DogDto>> call;
     ArrayList<DogDto> arrayList;
     Intent intent;
     DogDto dogInfo;
+    private DogDataDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,15 +54,21 @@ public class SplashActivity extends AppCompatActivity {
         }, delayTime);
 
         //delayTime 동안 Loading text 변경 애니메이션을 위한 타이머 생성
-        CountDownTimer loadingTimer = new CountDownTimer(delayTime,500) {
+        CountDownTimer loadingTimer = new CountDownTimer(delayTime, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
-                switch (delayCnt){
-                    case 1: text_loading.setText("Loading ."); break;
-                    case 2: text_loading.setText("Loading . ."); break;
-                    case 3: text_loading.setText("Loading . . ."); break;
+                switch (delayCnt) {
+                    case 1:
+                        text_loading.setText("Loading .");
+                        break;
+                    case 2:
+                        text_loading.setText("Loading . .");
+                        break;
+                    case 3:
+                        text_loading.setText("Loading . . .");
+                        break;
                 }
-                if(delayCnt == 3)
+                if (delayCnt == 3)
                     delayCnt = 1;
                 else
                     delayCnt++;
@@ -87,11 +93,11 @@ public class SplashActivity extends AppCompatActivity {
                 db.getDogDao().deleteAll(); //DB 초기화(Update 부분 구현 시 삭제)
                 Log.d("TAG", "onResponse: 테이블" + db.getDogDao().getAll().isEmpty());
                 DogData dogData = new DogData();
-                
+
                 //Dog API에서 받아온 값 room의 DogData Entity가 null이면 저장 아니면 update
-                if(db.getDogDao().getAll().isEmpty()){
+                if (db.getDogDao().getAll().isEmpty()) {
                     Log.d("TAG", "onResponse: 크기" + result.size());
-                    for(int i = 0; i<result.size(); i++){
+                    for (int i = 0; i < result.size(); i++) {
                         dogData.id = result.get(i).getId();
                         dogData.name = result.get(i).getName();
                         dogData.bredFor = result.get(i).getBred_for();
@@ -101,11 +107,9 @@ public class SplashActivity extends AppCompatActivity {
                         db.getDogDao().insert(dogData);
                         Log.d("TAG", "Room 확인 " + result.get(i).getId());
                     }
-                }else{
-                 // 변경된 Data Update 하는 부분
-                    ;
+                } else {
+                    // 변경된 Data Update 하는 부분
                 }
-
 
 
             }
@@ -116,7 +120,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-            //아래 코드는 splash 화면이 안나온 상태로 delayTime이 지나가고 Main 화면으로 넘어감..
+        //아래 코드는 splash 화면이 안나온 상태로 delayTime이 지나가고 Main 화면으로 넘어감..
 //        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 //        try{
 //            Thread.sleep(delayTime);

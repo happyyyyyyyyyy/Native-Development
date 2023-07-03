@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if(menuItem.getItemId() == R.id.home)
+                if (menuItem.getItemId() == R.id.home)
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new HomeFragment()).commit();
                 else if (menuItem.getItemId() == R.id.bookmark)
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new BookmarkFragment()).commit();
