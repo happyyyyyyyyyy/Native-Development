@@ -32,7 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Bred for"
+        android:text=" Bred for"
+        android:drawableLeft="@drawable/text_foot_icon"
         app:layout_constraintStart_toStartOf="@id/dogImg"
         app:layout_constraintTop_toBottomOf="@id/dogImg" />
 
@@ -50,7 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Life span"
+        android:text=" Life span"
+        android:drawableLeft="@drawable/text_foot_icon"
         app:layout_constraintStart_toStartOf="@id/dogImg"
         app:layout_constraintTop_toBottomOf="@id/bredForData" />
 
@@ -68,7 +70,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Temperant"
+        android:text=" Temperant"
+        android:drawableLeft="@drawable/text_foot_icon"
         app:layout_constraintStart_toStartOf="@id/dogImg"
         app:layout_constraintTop_toBottomOf="@id/lifeSpanData" />
 
@@ -86,7 +89,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Weight/Height"
+        android:text=" Weight/Height"
+        android:drawableLeft="@drawable/text_foot_icon"
         app:layout_constraintStart_toStartOf="@id/dogImg"
         app:layout_constraintTop_toBottomOf="@id/temperantData" />
 
