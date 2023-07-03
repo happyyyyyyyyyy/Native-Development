@@ -25,6 +25,11 @@ public interface DogDao {
     @Query("DELETE FROM DogData")
     void deleteAll();
 
+    @Query("SELECT * FROM DogData " +
+            "WHERE name Like :searchQuery " +
+            "ORDER BY CASE WHEN name = :exactMatch THEN 1 ELSE 2 END, name")
+    List<DogData> search(String searchQuery, String exactMatch);
+
 
 
 

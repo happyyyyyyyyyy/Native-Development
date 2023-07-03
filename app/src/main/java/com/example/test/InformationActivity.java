@@ -65,7 +65,7 @@ public class InformationActivity extends AppCompatActivity {
                     avgHeight = response.body().getHeight().getHeightAvg().toString();
 
 
-                dogWeightHeight.setText(avgWeight + "kg / " + avgHeight + "cm");
+                dogWeightHeight.setText("avg. " + avgWeight + "kg / " + avgHeight + "cm");
                 Glide.with(InformationActivity.this)
                         .load(url) // 이미지 소스 로드
                         .thumbnail(0.1f) // 실제 이미지 크기 중 30%만 먼저 가져와서 흐릿하게 보여줌

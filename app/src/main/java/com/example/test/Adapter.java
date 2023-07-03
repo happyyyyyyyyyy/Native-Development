@@ -16,11 +16,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     Context mContext;
-    private final ArrayList<DogDto> arrayList2;
+    private ArrayList<DogDto> arrayList2 = null;
     private final onListItemSelectedInterface mListener;
 
     public Adapter(Context context, onListItemSelectedInterface listener) {
@@ -63,17 +64,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return arrayList2.size();
     }
 
-    public void setArrayData(DogDto dogInfo) {
-        Log.d("TAG", "setArrayData: " + dogInfo.getName());
-        arrayList2.add(dogInfo);
-        Log.d("TAG", "setArrayData: " + arrayList2.get(0).getName());
-        Log.d("TAG", "setArrayData: " + arrayList2.size());
 
-//        for (int i = 0; i < arrayList2.size(); i++) {
-//            Log.d("TAG", "Element at index " + i + ": " + arrayList2.get(i).getName());
-//        }
+
+    public void setItems(List<DogDto> items){
+        arrayList2.clear();
+        arrayList2.addAll(items);
+//        for(DogDto one : arrayList2)
+//            Log.d("TAG", "setItems: " + one.getName());
+        notifyDataSetChanged();
     }
 
+    //얕은 복사를 깊은 복사로 해결하는 방법
+//    public void setItems(ArrayList<DogDto> items){
+//        arrayList2.clear();
+//        arrayList2.addAll(items);
+//        for(DogDto one : arrayList2)
+//            Log.d("TAG", "setItems: " + one.getName());
+//        notifyDataSetChanged();
+//    }
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView text_name;
         TextView text_bred;
