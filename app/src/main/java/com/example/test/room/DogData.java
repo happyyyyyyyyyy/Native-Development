@@ -11,4 +11,7 @@ public class DogData {
     public String name;
 
     public String bredFor;
+    public String img;
+
+
 }

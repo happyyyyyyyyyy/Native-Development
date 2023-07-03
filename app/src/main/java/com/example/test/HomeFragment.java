@@ -55,6 +55,10 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         for(DogData one : dogDataList){
             DogDto dogInfo = new DogDto(one.id, one.name, one.bredFor,
                     "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", 12, false, R.drawable.unselected_bookmark_icon, i);
+            Image img = new Image();
+            img.setUrl(one.img);
+            dogInfo.setImage(img);
+            Log.d("TAG", "onCreateView: " + dogInfo.image.getUrl());
             i++;
             adapter.setArrayData(dogInfo); //adapter에 set
         }

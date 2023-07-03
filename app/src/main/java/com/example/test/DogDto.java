@@ -2,6 +2,7 @@ package com.example.test;
 
 public class DogDto {
     // 사진, 이름, 품종, Weight, Height, Temperament, Life span, BookMark_check
+    Image image;
     int id;
     String name;
     String bred_for;
@@ -24,6 +25,15 @@ public class DogDto {
         this.bookmark_check = bookmark_check;
         this.bookmark_img = bookmark_img;
         this.index = index;
+    }
+    public Image getImage ()
+    {
+        return image;
+    }
+
+    public void setImage (Image image)
+    {
+        this.image = image;
     }
     public int getId(){
         return id;
