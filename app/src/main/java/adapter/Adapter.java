@@ -1,4 +1,4 @@
-package com.example.test;
+package adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,10 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.test.R;
+import com.example.test.dto.DogDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import Interface.onListItemSelectedInterface;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     Context mContext;

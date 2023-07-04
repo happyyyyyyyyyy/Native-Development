@@ -1,15 +1,23 @@
-package com.example.test;
+package com.example.test.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.test.R;
+import com.example.test.api.retrofit_client;
+import com.example.test.dto.DogDto;
 
 import java.util.Objects;
 
@@ -36,6 +44,14 @@ public class InformationActivity extends AppCompatActivity {
         dogLifeSpan = findViewById(R.id.lifeSpanData);
         dogTemperant = findViewById(R.id.temperantData);
         dogWeightHeight = findViewById(R.id.weightAndheightData);
+        
+        //액션바 뒤로가기 설정
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
 
         Intent infoIntent = getIntent();
         Toast.makeText(this, "아이디 : " + infoIntent.getIntExtra("id", 0), Toast.LENGTH_SHORT).show();
@@ -55,6 +71,7 @@ public class InformationActivity extends AppCompatActivity {
                     dogBredFor.setText(response.body().getBred_for());
                 dogLifeSpan.setText(response.body().getLifeSpan());
                 dogTemperant.setText(response.body().getTemperament());
+                toolbar.setTitle(response.body().getName());
 
                 //Weight, Height의 평균 구하기
                 String avgWeight = response.body().getWeight().getMetric();
@@ -78,5 +95,16 @@ public class InformationActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId ()) {
+            case android.R.id.home: //툴바 뒤로가기 버튼 눌렸을 때 동작
+                finish ();
+                return true;
+            default:
+                return super.onOptionsItemSelected (item);
+        }
     }
 }

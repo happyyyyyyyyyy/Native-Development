@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.test.R;
+import com.example.test.activity.InformationActivity;
+import com.example.test.dto.DogDto;
+import com.example.test.dto.Image;
 import com.example.test.room.DogData;
 import com.example.test.room.DogDataDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Interface.onListItemSelectedInterface;
+import adapter.Adapter;
 import retrofit2.Call;
 
 
@@ -65,7 +71,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
             Image img = new Image();
             img.setUrl(one.img);
             dogInfo.setImage(img);
-            Log.d("TAG", "onCreateView: " + dogInfo.image.getUrl());
+            Log.d("TAG", "onCreateView: " + dogInfo.getImage().getUrl());
             i++;
             apiDataList.add(dogInfo);
 
@@ -75,14 +81,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         
         //searchView Event 구현
         searchList = new ArrayList<>();
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                Toast.makeText(ct, "x 클릭" , Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "onClose: 닫기");
-                return true;
-            }
-        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

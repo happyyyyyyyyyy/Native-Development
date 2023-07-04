@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -6,6 +6,9 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.test.R;
+import com.example.test.fragment.BookmarkFragment;
+import com.example.test.fragment.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

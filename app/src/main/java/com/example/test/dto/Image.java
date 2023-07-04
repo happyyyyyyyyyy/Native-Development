@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.dto;
 
 public class Image {
     private String width;

@@ -1,4 +1,6 @@
-package com.example.test;
+package com.example.test.api;
+
+import com.example.test.dto.DogDto;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,8 @@
-package com.example.test;
+package Interface;
 
 import android.view.View;
+
+import com.example.test.dto.DogDto;
 
 import java.util.ArrayList;
 

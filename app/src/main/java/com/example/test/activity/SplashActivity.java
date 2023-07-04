@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.test.R;
+import com.example.test.api.retrofit_client;
+import com.example.test.dto.DogDto;
 import com.example.test.room.DogData;
 import com.example.test.room.DogDataDatabase;
 
