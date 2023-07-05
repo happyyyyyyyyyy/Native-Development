@@ -1,5 +1,7 @@
 package adapter;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +10,26 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.test.R;
+import com.example.test.dto.BookmarkDto;
 
-import Interface.onListItemSelectedInterface;
+import java.util.ArrayList;
+import java.util.List;
+
+import Interface.onBookmarkListItemSelectedInterface;
 
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHolder> {
 
-    private final onListItemSelectedInterface mListener;
+    Context mContext;
+    private final onBookmarkListItemSelectedInterface mListener;
+    private ArrayList<BookmarkDto> bookmarkList  = null;
 
-    public BookMarkAdapter(onListItemSelectedInterface mListener) {
+    public BookMarkAdapter(Context context, onBookmarkListItemSelectedInterface mListener) {
+        this.mContext = context;
         this.mListener = mListener;
+        bookmarkList = new ArrayList<>();
     }
 
 
@@ -30,14 +42,28 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull BookMarkAdapter.ViewHolder holder, int position) {
-
+        Log.d("TAG", "onBindViewHolder: 실행?");
+        BookmarkDto bookmark = bookmarkList.get(position);
+        RequestOptions crop = new RequestOptions().centerCrop();
+        Glide.with(mContext)
+                .load(bookmark.getImg()) // 이미지 소스 로드
+                .apply(crop)
+                .thumbnail(0.1f) // 실제 이미지 크기 중 30%만 먼저 가져와서 흐릿하게 보여줌
+                .into(holder.bookmarkImg); // 이미지 띄울 view 선택
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return bookmarkList.size();
     }
 
+    public void setItems(List<BookmarkDto> items){
+        bookmarkList.clear();
+        bookmarkList.addAll(items);
+        for(BookmarkDto one : bookmarkList)
+            Log.d("TAG", "setItems: " + one.getName());
+
+    }
 
     //bookmark_dog_list에 있는 view 인플레이팅 및 클릭 이벤트 처리
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -52,8 +78,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             bookmarkImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    
-                    //mListener.changeScreen(arrayList2.get(getAdapterPosition()).getId(), arrayList2.get(getAdapterPosition()).getImage().getUrl());
+//                    mListener.changeScreen(bookmarkList.get(getAdapterPosition()).getId(), bookmarkList.get(getAdapterPosition()).getImage().getUrl());
                 }
             });
         }
