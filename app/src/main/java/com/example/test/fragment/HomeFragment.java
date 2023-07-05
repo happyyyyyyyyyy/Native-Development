@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
     private DogDataDatabase db;
 
 
-
+    TextView noDataText;
     SearchView searchView;
 
     @Override
@@ -57,6 +58,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         db = Room.databaseBuilder(ct, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
 
         searchView = v.findViewById(R.id.search);
+        noDataText = v.findViewById(R.id.noDataText);
         recyclerView = v.findViewById(R.id.dog_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)); // 상하 스크롤
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)); // 좌우 스크롤
@@ -100,6 +102,8 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
                 Log.d("TAG", "onQueryTextChange: " + newText);
                 //검색창이 비어 있으면 전체 데이터 출력
                 if(newText.isEmpty()){
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataText.setVisibility(View.INVISIBLE);
                     List<DogDto> tempList = new ArrayList<>();
                     for (DogDto dog : apiDataList) {
                         if (db.getDogDao().checkData(dog.getId()))
@@ -178,19 +182,27 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
     public void search(String query){
         searchList.clear();
         List<DogData> searchDataList = db.getDogDao().search("%"+query+"%", query);
-        int i = 0;
-        for(DogData one : searchDataList){
-            DogDto searchData = new DogDto(one.id, one.name, one.bredFor,
-                    "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", "12", false, R.drawable.unselected_bookmark_icon, i);
-            Image img = new Image();
-            img.setUrl(one.img);
-            searchData.setImage(img);
-            if(db.getDogDao().checkData(one.id))
-                searchData.setBookmark_img(R.drawable.selected_bookmark_icon);
-            i++;
-            searchList.add(searchData);
+        if(searchDataList.size() == 0){
+            noDataText.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
         }
-        homeAdapter.setItems(searchList);
+        else{
+            recyclerView.setVisibility(View.VISIBLE);
+            noDataText.setVisibility(View.INVISIBLE);
+            int i = 0;
+            for(DogData one : searchDataList){
+                DogDto searchData = new DogDto(one.id, one.name, one.bredFor,
+                        "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", "12", false, R.drawable.unselected_bookmark_icon, i);
+                Image img = new Image();
+                img.setUrl(one.img);
+                searchData.setImage(img);
+                if(db.getDogDao().checkData(one.id))
+                    searchData.setBookmark_img(R.drawable.selected_bookmark_icon);
+                i++;
+                searchList.add(searchData);
+            }
+            homeAdapter.setItems(searchList);
+        }
     }
 
 }
