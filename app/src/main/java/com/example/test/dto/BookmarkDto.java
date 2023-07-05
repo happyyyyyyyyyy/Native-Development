@@ -10,6 +10,16 @@ public class BookmarkDto {
     public String img;
 
     public boolean bookmarkCheck;
+    public BookmarkDto() {
+        // Empty constructor
+    }
+    public BookmarkDto(BookmarkDto other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.bredFor = other.bredFor;
+        this.img = other.img;
+        this.bookmarkCheck = other.bookmarkCheck;
+    }
 
     public int getId(){return id;}
     public void setId(int id){this.id = id;}

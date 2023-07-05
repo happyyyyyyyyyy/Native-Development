@@ -57,6 +57,11 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         return bookmarkList.size();
     }
 
+    public ArrayList<BookmarkDto> getBookmarkList() {
+        ArrayList<BookmarkDto> target = new ArrayList<>(bookmarkList);
+        return target;
+    }
+
     public void setItems(List<BookmarkDto> items){
         bookmarkList.clear();
         bookmarkList.addAll(items);
@@ -78,7 +83,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             bookmarkImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    mListener.changeScreen(bookmarkList.get(getAdapterPosition()).getId(), bookmarkList.get(getAdapterPosition()).getImage().getUrl());
+                    mListener.changeScreen(bookmarkList.get(getAdapterPosition()).getId(), bookmarkList.get(getAdapterPosition()).getImg(), getAdapterPosition());
                 }
             });
         }

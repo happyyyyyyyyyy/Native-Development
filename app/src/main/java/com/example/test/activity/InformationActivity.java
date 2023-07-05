@@ -145,9 +145,13 @@ public class InformationActivity extends AppCompatActivity {
         }
     }
 
+    //기기 내의 뒤로가기 버튼 누를 때 실행
     @Override
-    protected void onDestroy() {
+    public void onBackPressed() {
         setResult(RESULT_OK, infoIntent);
-        super.onDestroy();
+        finish();
+        super.onBackPressed();
     }
+
+
 }

@@ -24,7 +24,7 @@ public interface DogDao {
     @Query("SELECT * FROM DogData")
     List<DogData> getAll();
 
-    @Query("SELECT * FROM DogData")
+    @Query("SELECT * FROM DogData WHERE bookmarkCheck = 1")
     List<BookmarkDto> getBookmarkAll();
 
     @Query("DELETE FROM DogData")
