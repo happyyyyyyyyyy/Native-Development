@@ -86,6 +86,14 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
                     mListener.changeScreen(bookmarkList.get(getAdapterPosition()).getId(), bookmarkList.get(getAdapterPosition()).getImg(), getAdapterPosition());
                 }
             });
+
+            bookmarkImg.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mListener.deleteBookmark(bookmarkList.get(getAdapterPosition()).getId(), getAdapterPosition());
+                    return false;
+                }
+            });
         }
     }
 }

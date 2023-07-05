@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -124,7 +123,6 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
     //RecyclerView 클릭 시 이벤트 처리 부분
     @Override
     public void onItemSelected(View v, int position, ArrayList<DogDto> arrayList) {
-        Toast.makeText(getContext(), "position" + position, Toast.LENGTH_SHORT).show();
         boolean checkData = false; // 북마크 상태 저장 변수 true -> 북마크 O false -> 북마크 X
         BookmarkDB bookmarkDB = new BookmarkDB(arrayList, position, ct);
         checkData = bookmarkDB.dbCheck(); // 데이터가 북마크 되어 있는 상태인지 확인
@@ -134,13 +132,11 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
             Log.d("TAG", "북마크 이미지 제거 " + arrayList.get(position).getBookmark_img());
             bookmarkDB.updateBookmark();
             arrayList.get(position).setBookmark_check(false);
-            Toast.makeText(getContext(), "북마크 제거" + position, Toast.LENGTH_SHORT).show();
         } else { // 북마크에 저장 되어 있지 않음 -> 추가 작업
             arrayList.get(position).setBookmark_img(R.drawable.selected_bookmark_icon);
             Log.d("TAG", "북마크 이미지 추가 " + arrayList.get(position).getBookmark_img());
             bookmarkDB.updateBookmark();
             arrayList.get(position).setBookmark_check(true);
-            Toast.makeText(getContext(), "북마크 추가" + position, Toast.LENGTH_SHORT).show();
         }
 
         //RecyclerView 업데이트

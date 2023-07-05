@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -64,7 +63,6 @@ public class InformationActivity extends AppCompatActivity {
 
 
         infoIntent = getIntent();
-        Toast.makeText(this, "아이디 : " + infoIntent.getIntExtra("id", 0), Toast.LENGTH_SHORT).show();
         int id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
         infoIntent.putExtra("position", infoIntent.getIntExtra("position", 0));
         infoIntent.putExtra("id", id);
