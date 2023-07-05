@@ -2,10 +2,12 @@ package com.example.test.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +39,7 @@ public class InformationActivity extends AppCompatActivity {
     TextView dogTemperant;
     TextView dogWeightHeight;
     String url;
-
+    Button moreButton;
     DogDataDatabase db;
     Intent infoIntent;
 
@@ -52,6 +54,7 @@ public class InformationActivity extends AppCompatActivity {
         dogLifeSpan = findViewById(R.id.lifeSpanData);
         dogTemperant = findViewById(R.id.temperantData);
         dogWeightHeight = findViewById(R.id.weightAndheightData);
+        moreButton = findViewById(R.id.moreButton);
         
         //액션바 뒤로가기 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -91,6 +94,7 @@ public class InformationActivity extends AppCompatActivity {
             }
         });
 
+
         //API로 상세 정보 데이터 GET
         call = retrofit_client.getApiService().test_api_get("live_mtPILdV1Vd1b0kcRxjsB1KVMOOHipR18xuUthvy0Y8gH9ZGvNW69RrCip5CErxth", id + "");
         call.enqueue(new Callback<DogDto>() {
@@ -106,6 +110,16 @@ public class InformationActivity extends AppCompatActivity {
                 dogLifeSpan.setText(response.body().getLifeSpan());
                 dogTemperant.setText(response.body().getTemperament());
                 toolbar.setTitle(response.body().getName());
+
+                //하단 버튼 클릭 시 구글에 검색해주는 이벤트 구현
+                moreButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String url = "https://www.google.com/search?q=" + response.body().getName();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    }
+                });
 
                 //Weight, Height의 평균 구하기
                 String avgWeight = response.body().getWeight().getMetric();
