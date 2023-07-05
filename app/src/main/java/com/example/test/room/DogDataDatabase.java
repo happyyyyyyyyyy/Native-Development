@@ -10,4 +10,5 @@ import androidx.room.RoomDatabase;
 )
 public abstract class DogDataDatabase extends RoomDatabase {
     public abstract DogDao getDogDao();
+
 }

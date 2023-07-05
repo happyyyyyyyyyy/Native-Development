@@ -13,5 +13,7 @@ public class DogData {
     public String bredFor;
     public String img;
 
-
+    public boolean bookmarkCheck;
 }
+
+

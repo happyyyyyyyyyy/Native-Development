@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
 import com.example.test.api.retrofit_client;
 import com.example.test.dto.DogDto;
+import com.example.test.room.DogDataDatabase;
 
 import java.util.Objects;
 
@@ -28,11 +32,15 @@ import retrofit2.Response;
 public class InformationActivity extends AppCompatActivity {
     Call<DogDto> call;
     ImageView dogImg;
+    ImageButton bookmarkButton;
     TextView dogBredFor;
     TextView dogLifeSpan;
     TextView dogTemperant;
     TextView dogWeightHeight;
     String url;
+
+    DogDataDatabase db;
+    Intent infoIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,7 @@ public class InformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_information);
 
         dogImg = findViewById(R.id.dogImg);
+        bookmarkButton = findViewById(R.id.bookmark_button);
         dogBredFor = findViewById(R.id.bredForData);
         dogLifeSpan = findViewById(R.id.lifeSpanData);
         dogTemperant = findViewById(R.id.temperantData);
@@ -47,17 +56,44 @@ public class InformationActivity extends AppCompatActivity {
         
         //액션바 뒤로가기 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
 
-        Intent infoIntent = getIntent();
+        infoIntent = getIntent();
         Toast.makeText(this, "아이디 : " + infoIntent.getIntExtra("id", 0), Toast.LENGTH_SHORT).show();
-        int id = infoIntent.getIntExtra("id", 0);
+        int id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
+        infoIntent.putExtra("position", infoIntent.getIntExtra("position", 0));
+        infoIntent.putExtra("id", id);
         url = infoIntent.getStringExtra("imgUrl");
 
+
+        //화면 전환 시 북마크 체크 후 이미지 set
+        db = Room.databaseBuilder(this, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
+        if(db.getDogDao().checkData(id))
+            bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
+        else
+            bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
+
+        //북마크 버튼 클릭 시 이벤트 처리
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(db.getDogDao().checkData(id)){
+                    bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
+                    db.getDogDao().updateBookmarkCheck(false, id);
+                }
+                else{
+                    bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
+                    db.getDogDao().updateBookmarkCheck(true, id);
+                }
+            }
+        });
+
+        //API로 상세 정보 데이터 GET
         call = retrofit_client.getApiService().test_api_get("live_mtPILdV1Vd1b0kcRxjsB1KVMOOHipR18xuUthvy0Y8gH9ZGvNW69RrCip5CErxth", id + "");
         call.enqueue(new Callback<DogDto>() {
             @Override
@@ -101,10 +137,17 @@ public class InformationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId ()) {
             case android.R.id.home: //툴바 뒤로가기 버튼 눌렸을 때 동작
-                finish ();
+                setResult(RESULT_OK, infoIntent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected (item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        setResult(RESULT_OK, infoIntent);
+        super.onDestroy();
     }
 }

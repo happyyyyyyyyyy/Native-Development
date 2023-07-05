@@ -32,6 +32,19 @@ public class DogDto {
         this.index = index;
     }
 
+    public DogDto(DogDto other){
+        this.id = other.id;
+        this.name = other.name;
+        this.bred_for = other.bred_for;
+        this.weight = other.weight;
+        this.height = other.height;
+        this.temperament = other.temperament;
+        this.lifeSpan = other.lifeSpan;
+        this.bookmark_check = other.bookmark_check;
+        this.bookmark_img = other.bookmark_img;
+        this.index = other.index;
+    }
+
     public Image getImage() {
         return image;
     }

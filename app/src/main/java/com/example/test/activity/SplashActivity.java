@@ -105,6 +105,7 @@ public class SplashActivity extends AppCompatActivity {
                         dogData.name = result.get(i).getName();
                         dogData.bredFor = result.get(i).getBred_for();
                         dogData.img = result.get(i).getImage().getUrl();
+                        dogData.bookmarkCheck = false;
                         Log.d("TAG", "onResponse: 이미지 " + dogData.img);
                         Log.d("TAG", "onResponse: 이미지 " + result.get(i).getImage().getUrl());
                         db.getDogDao().insert(dogData);

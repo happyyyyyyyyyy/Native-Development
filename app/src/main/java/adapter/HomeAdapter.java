@@ -23,12 +23,12 @@ import java.util.Objects;
 
 import Interface.onListItemSelectedInterface;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Context mContext;
     private ArrayList<DogDto> arrayList2 = null;
     private final onListItemSelectedInterface mListener;
 
-    public Adapter(Context context, onListItemSelectedInterface listener) {
+    public HomeAdapter(Context context, onListItemSelectedInterface listener) {
         this.mContext = context;
         this.mListener = listener;
         arrayList2 = new ArrayList<>();
@@ -36,10 +36,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @NonNull
     @Override
-    public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_dog_list, parent, false);
-        return new Adapter.ViewHolder(view);
+        return new HomeAdapter.ViewHolder(view);
     }
 
 
@@ -68,7 +68,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return arrayList2.size();
     }
 
-
+    public ArrayList<DogDto> getArrayList2() {
+        ArrayList<DogDto> target = new ArrayList<>(arrayList2);
+        return target;
+    }
 
     public void setItems(List<DogDto> items){
         arrayList2.clear();
@@ -113,7 +116,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.changeScreen(arrayList2.get(getAdapterPosition()).getId(), arrayList2.get(getAdapterPosition()).getImage().getUrl());
+                    mListener.changeScreen(arrayList2.get(getAdapterPosition()).getId(), arrayList2.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
                 }
             });
 

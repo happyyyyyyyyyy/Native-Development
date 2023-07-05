@@ -30,7 +30,11 @@ public interface DogDao {
             "ORDER BY CASE WHEN name = :exactMatch THEN 1 ELSE 2 END, name")
     List<DogData> search(String searchQuery, String exactMatch);
 
+    @Query("SELECT bookmarkCheck FROM DogData WHERE id = :id")
+    boolean checkData(int id);
 
-
+    @Query("UPDATE DogData SET bookmarkCheck = :bookmarkCheck WHERE id = :id")
+    void updateBookmarkCheck(boolean bookmarkCheck, int id);
 
 }
+

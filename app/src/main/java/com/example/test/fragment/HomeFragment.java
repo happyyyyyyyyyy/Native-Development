@@ -1,5 +1,7 @@
 package com.example.test.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.test.BookmarkDB;
 import com.example.test.R;
 import com.example.test.activity.InformationActivity;
 import com.example.test.dto.DogDto;
@@ -26,13 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Interface.onListItemSelectedInterface;
-import adapter.Adapter;
+import adapter.HomeAdapter;
 import retrofit2.Call;
 
 
 public class HomeFragment extends Fragment implements onListItemSelectedInterface {
     RecyclerView recyclerView;
-    Adapter adapter;
+    HomeAdapter homeAdapter;
     Context ct;
     Call<ArrayList<DogDto>> call;
     ArrayList<DogDto> apiDataList;
@@ -41,6 +44,8 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
     DogDto dogInfo;
     ArrayList<DogDto> result;
     private DogDataDatabase db;
+
+
 
     SearchView searchView;
 
@@ -57,7 +62,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)); // 상하 스크롤
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)); // 좌우 스크롤
 
-        adapter = new Adapter(ct, this);
+        homeAdapter = new HomeAdapter(ct, this);
         apiDataList = new ArrayList<>();
 
         //room에 저장된 dogData를 recyclerView에 set
@@ -71,13 +76,15 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
             Image img = new Image();
             img.setUrl(one.img);
             dogInfo.setImage(img);
+            if(db.getDogDao().checkData(one.id))
+                dogInfo.setBookmark_img(R.drawable.selected_bookmark_icon);
             Log.d("TAG", "onCreateView: " + dogInfo.getImage().getUrl());
             i++;
             apiDataList.add(dogInfo);
 
         }
-        adapter.setItems(apiDataList);
-        recyclerView.setAdapter(adapter);
+        homeAdapter.setItems(apiDataList);
+        recyclerView.setAdapter(homeAdapter);
         
         //searchView Event 구현
         searchList = new ArrayList<>();
@@ -94,7 +101,15 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
                 Log.d("TAG", "onQueryTextChange: " + newText);
                 //검색창이 비어 있으면 전체 데이터 출력
                 if(newText.isEmpty()){
-                    adapter.setItems(apiDataList);
+                    List<DogDto> tempList = new ArrayList<>();
+                    for (DogDto dog : apiDataList) {
+                        if (db.getDogDao().checkData(dog.getId()))
+                            dog.setBookmark_img(R.drawable.selected_bookmark_icon);
+                        else
+                            dog.setBookmark_img(R.drawable.unselected_bookmark_icon);
+                        tempList.add(dog);
+                    }
+                    homeAdapter.setItems(tempList);
                 }
                 //검색 창에서 글자가 변경이 일어날 때마다 호출
                 else {
@@ -110,34 +125,59 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
     @Override
     public void onItemSelected(View v, int position, ArrayList<DogDto> arrayList) {
         Toast.makeText(getContext(), "position" + position, Toast.LENGTH_SHORT).show();
-        if (arrayList.get(position).getBookmark_check()) {
+        boolean checkData = false; // 북마크 상태 저장 변수 true -> 북마크 O false -> 북마크 X
+        BookmarkDB bookmarkDB = new BookmarkDB(arrayList, position, ct);
+        checkData = bookmarkDB.dbCheck(); // 데이터가 북마크 되어 있는 상태인지 확인
+
+        if (checkData) { // 북마크에 저장 되어 있음 -> 삭제 작업
             arrayList.get(position).setBookmark_img(R.drawable.unselected_bookmark_icon);
             Log.d("TAG", "북마크 이미지 제거 " + arrayList.get(position).getBookmark_img());
+            bookmarkDB.updateBookmark();
             arrayList.get(position).setBookmark_check(false);
             Toast.makeText(getContext(), "북마크 제거" + position, Toast.LENGTH_SHORT).show();
-        } else {
+        } else { // 북마크에 저장 되어 있지 않음 -> 추가 작업
             arrayList.get(position).setBookmark_img(R.drawable.selected_bookmark_icon);
             Log.d("TAG", "북마크 이미지 추가 " + arrayList.get(position).getBookmark_img());
+            bookmarkDB.updateBookmark();
             arrayList.get(position).setBookmark_check(true);
             Toast.makeText(getContext(), "북마크 추가" + position, Toast.LENGTH_SHORT).show();
         }
 
-        //북마크 DB 체크 다 하고
-
-
         //RecyclerView 업데이트
-        adapter.notifyItemChanged(position);
+        homeAdapter.notifyItemChanged(position);
     }
 
     @Override
-    public void changeScreen(int id, String imgUrl) {
+    public void changeScreen(int id, String imgUrl, int position) {
         Intent intent = new Intent(ct, InformationActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("imgUrl", imgUrl);
-        startActivity(intent);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, 1);
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // 새로고침 작업 수행
+            ArrayList<DogDto> bookmarkInfo = new ArrayList<>();
+            int i = 0;
+            for(DogDto dog : homeAdapter.getArrayList2()){
+                bookmarkInfo.add(new DogDto(dog));
+                bookmarkInfo.get(i++).setImage(dog.getImage());
+            }
+
+            if(db.getDogDao().checkData(data.getIntExtra("id", -1))){
+                bookmarkInfo.get(data.getIntExtra("position", -1)).setBookmark_img(R.drawable.selected_bookmark_icon);
+            }
+            else{
+                bookmarkInfo.get(data.getIntExtra("position", -1)).setBookmark_img(R.drawable.unselected_bookmark_icon);
+            }
+            Log.d("TAG", "onActivityResult: 실행?" + data.getIntExtra("position", -1));
+            homeAdapter.setItems(bookmarkInfo);
+            homeAdapter.notifyItemChanged(data.getIntExtra("position", -1));
+        }
     }
 
-    
     //검색 메소드 구현
     public void search(String query){
         searchList.clear();
@@ -149,10 +189,12 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
             Image img = new Image();
             img.setUrl(one.img);
             searchData.setImage(img);
+            if(db.getDogDao().checkData(one.id))
+                searchData.setBookmark_img(R.drawable.selected_bookmark_icon);
             i++;
             searchList.add(searchData);
         }
-        adapter.setItems(searchList);
+        homeAdapter.setItems(searchList);
     }
 
 }
