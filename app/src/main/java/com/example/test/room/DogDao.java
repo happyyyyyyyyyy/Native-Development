@@ -24,6 +24,9 @@ public interface DogDao {
     @Query("SELECT * FROM DogData")
     List<DogData> getAll();
 
+    @Query("SELECT * FROM DogData LIMIT :pageSize OFFSET :offset")
+    List<DogData> getItemsByPage(int pageSize, int offset);
+
     @Query("SELECT * FROM DogData WHERE bookmarkCheck = 1")
     List<BookmarkDto> getBookmarkAll();
 

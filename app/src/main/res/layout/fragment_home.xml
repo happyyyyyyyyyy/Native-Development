@@ -51,6 +51,8 @@
         app:layout_constraintTop_toBottomOf="@id/search"
         app:layout_constraintBottom_toTopOf="@id/guideline"/>
 
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="match_parent"

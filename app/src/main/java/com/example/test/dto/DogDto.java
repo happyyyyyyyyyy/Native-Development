@@ -19,6 +19,7 @@ public class DogDto {
     int bookmark_img;
     int index;
 
+
     public DogDto(int id, String name, String bred_for, String temperament, String lifeSpan, boolean bookmark_check, int bookmark_img, int index) {
         this.id = id;
         this.name = name;
@@ -30,6 +31,7 @@ public class DogDto {
         this.bookmark_check = bookmark_check;
         this.bookmark_img = bookmark_img;
         this.index = index;
+
     }
 
     public DogDto(DogDto other){
