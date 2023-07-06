@@ -1,5 +1,7 @@
 package com.example.test.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -33,9 +35,27 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.home)
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new HomeFragment()).commit();
-                else if (menuItem.getItemId() == R.id.bookmark)
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new BookmarkFragment()).commit();
-                return true;
+                else if (menuItem.getItemId() == R.id.bookmark){
+                    //네트워크 연결 안되면 경고창
+                    boolean isConnected = SplashActivity.isNetworkConnected(MainActivity.this);
+                    if (!isConnected)
+                        {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setMessage("네트워크 연결이 원활하지 않아 \n이미지가 로딩 되지 않을 수도 있습니다.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("CANCEL", new DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new BookmarkFragment()).commit();
+                                        }
+                                    }).show();
+                        }
+                        else
+                            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new BookmarkFragment()).commit();
+                }
+                    return true;
             }
         });
     }

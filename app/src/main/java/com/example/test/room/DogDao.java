@@ -38,6 +38,9 @@ public interface DogDao {
     @Query("SELECT bookmarkCheck FROM DogData WHERE id = :id")
     boolean checkData(int id);
 
+    @Query("SELECT id FROM DogData WHERE id = :id")
+    int checkData2(int id);
+
     @Query("UPDATE DogData SET bookmarkCheck = :bookmarkCheck WHERE id = :id")
     void updateBookmarkCheck(boolean bookmarkCheck, int id);
 
