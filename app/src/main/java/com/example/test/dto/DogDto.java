@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class DogDto {
     // 사진, 이름, 품종, Weight, Height, Temperament, Life span, BookMark_check
-    Image image;
+    DogImage image;
     int id;
     String name;
     String bred_for;
-    Weight weight;
-    Height height;
+    DogWeight weight;
+    DogHeight height;
 
     @SerializedName("temperament")
     String temperament;
@@ -34,7 +34,7 @@ public class DogDto {
 
     }
 
-    public DogDto(DogDto other){
+    public DogDto(DogDto other) {
         this.id = other.id;
         this.name = other.name;
         this.bred_for = other.bred_for;
@@ -47,11 +47,11 @@ public class DogDto {
         this.index = other.index;
     }
 
-    public Image getImage() {
+    public DogImage getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(DogImage image) {
         this.image = image;
     }
 
@@ -79,19 +79,19 @@ public class DogDto {
         this.bred_for = bred_for;
     }
 
-    public Weight getWeight() {
+    public DogWeight getWeight() {
         return weight;
     }
 
-    public void setWeight(Weight weight) {
+    public void setWeight(DogWeight weight) {
         this.weight = weight;
     }
 
-    public Height getHeight() {
+    public DogHeight getHeight() {
         return height;
     }
 
-    public void setHeight(Height height) {
+    public void setHeight(DogHeight height) {
         this.height = height;
     }
 

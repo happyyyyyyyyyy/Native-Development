@@ -6,13 +6,13 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class retrofit_client {
+public class RetrofitClient {
 
     private static final String BASE_URL = "https://api.thedogapi.com/";
 
 
-    public static Retrofit_interface getApiService() {
-        return getInstance().create(Retrofit_interface.class);
+    public static RetrofitInterface getApiService() {
+        return getInstance().create(RetrofitInterface.class);
     }
 
     private static Retrofit getInstance() {

@@ -8,49 +8,48 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        app:title="Home"
-        app:titleTextColor="@color/black"
         android:background="@color/splash_screen"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:title="Home"
+        app:titleTextColor="@color/black" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:iconifiedByDefault="false"
-        app:queryHint="Type something..."
         android:layout_marginRight="15dp"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:queryHint="Type something..." />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dog_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search"
-        app:layout_constraintBottom_toTopOf="@id/guideline"/>
+        app:layout_constraintTop_toBottomOf="@id/search" />
 
     <TextView
         android:id="@+id/noDataText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No search results . . ."
-        android:textStyle="bold"
         android:textSize="18dp"
+        android:textStyle="bold"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search"
-        app:layout_constraintBottom_toTopOf="@id/guideline"/>
-
+        app:layout_constraintTop_toBottomOf="@id/search" />
 
 
     <androidx.constraintlayout.widget.Guideline

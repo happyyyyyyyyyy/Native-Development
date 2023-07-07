@@ -25,16 +25,16 @@ import java.util.Objects;
 import Interface.onListItemSelectedInterface;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    Context mContext;
-    private ArrayList<DogDto> arrayList2 = null;
     private final onListItemSelectedInterface mListener;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
+    private Context mContext;
+    private ArrayList<DogDto> homeItemList = null;
 
     public HomeAdapter(Context context, onListItemSelectedInterface listener) {
         this.mContext = context;
         this.mListener = listener;
-        arrayList2 = new ArrayList<>();
+        homeItemList = new ArrayList<>();
     }
 
     @NonNull
@@ -42,7 +42,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_dog_list, parent, false);
-            return new ViewHolder(view);
+            return new ItemViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_dog_loading, parent, false);
             return new LoadingViewHolder(view);
@@ -52,47 +52,32 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //ViewHolder의 데이터 설정
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) { //position 값 -> 보여지는 데이터의 위치.
-        if(holder instanceof ViewHolder){
-        Log.d("TAG", "위치 " + arrayList2.get(position).getName());
-        ((ViewHolder) holder).text_name.setText(arrayList2.get(position).getName());
-        if (Objects.isNull(arrayList2.get(position).getBred_for()) || arrayList2.get(position).getBred_for().isEmpty())
-            ((ViewHolder) holder).text_bred.setText(". . . . ");
-        else
-            ((ViewHolder) holder).text_bred.setText(arrayList2.get(position).getBred_for());
-        ((ViewHolder) holder).button.setImageResource(arrayList2.get(position).getBookmark_img());
-        //Glide를 이용해서 이미지 출력
-        RequestOptions circleCrop = new RequestOptions().circleCrop(); //이미지 원형으로 나타내기 위한 사전 작업
-        Glide.with(mContext)
-                .load(arrayList2.get(position).getImage().getUrl()) // 이미지 소스 로드
-                .apply(circleCrop) // 이미지 원형으로 출력
-                .thumbnail(0.1f) // 실제 이미지 크기 중 30%만 먼저 가져와서 흐릿하게 보여줌
-                .into(((ViewHolder) holder).dogImg); // 이미지 띄울 view 선택
-        }else if(holder instanceof LoadingViewHolder){
-
+        if (holder instanceof ItemViewHolder) {
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            DogDto dog = homeItemList.get(position);
+            itemViewHolder.bindData(dog);
         }
-
-
     }
 
     @Override
     public int getItemCount() {
-        return arrayList2 == null ? 0 : arrayList2.size();
+        return homeItemList == null ? 0 : homeItemList.size();
     }
 
-    public ArrayList<DogDto> getArrayList2() {
-        ArrayList<DogDto> target = new ArrayList<>(arrayList2);
+    public ArrayList<DogDto> getHomeItemList() {
+        ArrayList<DogDto> target = new ArrayList<>(homeItemList);
         return target;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return arrayList2.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return homeItemList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
 
-    public void setItems(List<DogDto> items){
-        arrayList2.clear();
-        arrayList2.addAll(items);
+    public void setItems(List<DogDto> items) {
+        homeItemList.clear();
+        homeItemList.addAll(items);
 //        for(DogDto one : arrayList2)
 //            Log.d("TAG", "setItems: " + one.getName());
         notifyDataSetChanged();
@@ -106,15 +91,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //            Log.d("TAG", "setItems: " + one.getName());
 //        notifyDataSetChanged();
 //    }
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView text_name;
         TextView text_bred;
         ImageButton button;
         ImageView dogImg;
 
-        ViewHolder(View itemView) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
-
             text_name = itemView.findViewById(R.id.name_text);
             text_bred = itemView.findViewById(R.id.bred_for_text);
             button = itemView.findViewById(R.id.bookmark_button);
@@ -122,36 +107,43 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             //북마크 클릭 시 이벤트 처리
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onItemSelected(v, getAdapterPosition(), arrayList2);
-                    Log.d("test", "포지션=" + getAdapterPosition());
-                }
+            button.setOnClickListener(view -> {
+                mListener.onItemSelected(view, getAdapterPosition(), homeItemList);
+                Log.d("test", "포지션=" + getAdapterPosition());
             });
 
             //itemView 클릭 시 상세 정보로 넘어 가는 이벤트 처리
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.changeScreen(arrayList2.get(getAdapterPosition()).getId(), arrayList2.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
-                }
+            itemView.setOnClickListener(view -> {
+                mListener.changeScreen(homeItemList.get(getAdapterPosition()).getId(), homeItemList.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
             });
-
-
         }
 
+        public void bindData(DogDto dog) {
+            text_name.setText(dog.getName());
+            text_bred.setText(Objects.requireNonNullElse(dog.getBred_for(), ". . . . "));
+            button.setImageResource(dog.getBookmark_img());
+
+            RequestOptions circleCrop = new RequestOptions().circleCrop();
+            Glide.with(mContext)
+                    .load(dog.getImage().getUrl())
+                    .apply(circleCrop)
+                    .thumbnail(0.1f)
+                    .into(dogImg);
+        }
     }
 
     private class LoadingViewHolder extends RecyclerView.ViewHolder {
-        private ProgressBar progressBar;
+        private final ProgressBar progressBar;
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
             progressBar = itemView.findViewById(R.id.loadingIndicator); // ProgressBar 초기화
         }
     }
-
 }
+
+
+
+
 
 

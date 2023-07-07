@@ -20,7 +20,7 @@ import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
-import com.example.test.api.retrofit_client;
+import com.example.test.api.RetrofitClient;
 import com.example.test.dto.DogDto;
 import com.example.test.room.DogDataDatabase;
 
@@ -31,50 +31,46 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InformationActivity extends AppCompatActivity {
-    Call<DogDto> call;
-    ImageView dogImg;
-    ImageButton bookmarkButton;
-    TextView dogBredFor;
-    TextView dogLifeSpan;
-    TextView dogTemperant;
-    TextView dogWeightHeight;
-    String url;
-    Button moreButton;
-    DogDataDatabase db;
-    Intent infoIntent;
+    private Call<DogDto> call;
+    private ImageView dogImg;
+    private ImageButton bookmarkButton;
+    private TextView dogBredFor;
+    private TextView dogLifeSpan;
+    private TextView dogTemperant;
+    private TextView dogWeightHeight;
+    private String url;
+    private Button moreButton;
+    private DogDataDatabase db;
+    private Intent infoIntent;
+    private Toolbar toolbar;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
 
-        dogImg = findViewById(R.id.dogImg);
-        bookmarkButton = findViewById(R.id.bookmark_button);
-        dogBredFor = findViewById(R.id.bredForData);
-        dogLifeSpan = findViewById(R.id.lifeSpanData);
-        dogTemperant = findViewById(R.id.temperantData);
-        dogWeightHeight = findViewById(R.id.weightAndheightData);
-        moreButton = findViewById(R.id.moreButton);
-        
+        initializeViews(); //view Inflating
+
         //액션바 뒤로가기 설정
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
-
+        //intent 생성
         infoIntent = getIntent();
-        int id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
-        infoIntent.putExtra("position", infoIntent.getIntExtra("position", 0));
+        id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
+        int position = infoIntent.getIntExtra("position", 0);
+        infoIntent.putExtra("position", position);
         infoIntent.putExtra("id", id);
         url = infoIntent.getStringExtra("imgUrl");
 
 
         //화면 전환 시 북마크 체크 후 이미지 set
         db = Room.databaseBuilder(this, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
-        if(db.getDogDao().checkData(id))
+        if (db.getDogDao().checkData(id))
             bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
         else
             bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
@@ -83,20 +79,36 @@ public class InformationActivity extends AppCompatActivity {
         bookmarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(db.getDogDao().checkData(id)){
+                boolean isBookmark = db.getDogDao().checkData(id);
+                if (isBookmark) {
                     bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
                     db.getDogDao().updateBookmarkCheck(false, id);
-                }
-                else{
+                } else {
                     bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
                     db.getDogDao().updateBookmarkCheck(true, id);
                 }
             }
         });
 
+        //API에서 상세 정보 검색
+        getApiData();
 
+    }
+
+
+    private void initializeViews() {
+        dogImg = findViewById(R.id.dogImg);
+        bookmarkButton = findViewById(R.id.bookmark_button);
+        dogBredFor = findViewById(R.id.bredForData);
+        dogLifeSpan = findViewById(R.id.lifeSpanData);
+        dogTemperant = findViewById(R.id.temperantData);
+        dogWeightHeight = findViewById(R.id.weightAndheightData);
+        moreButton = findViewById(R.id.moreButton);
+    }
+
+    public void getApiData(){
         //API로 상세 정보 데이터 GET
-        call = retrofit_client.getApiService().test_api_get("live_mtPILdV1Vd1b0kcRxjsB1KVMOOHipR18xuUthvy0Y8gH9ZGvNW69RrCip5CErxth", id + "");
+        call = RetrofitClient.getApiService().getSearchData("live_mtPILdV1Vd1b0kcRxjsB1KVMOOHipR18xuUthvy0Y8gH9ZGvNW69RrCip5CErxth", id + "");
         call.enqueue(new Callback<DogDto>() {
             @Override
             public void onResponse(Call<DogDto> call, Response<DogDto> response) {
@@ -104,8 +116,7 @@ public class InformationActivity extends AppCompatActivity {
                 Log.d("TAG", "onResponse: " + response.body().getBred_for());
                 if (Objects.isNull(response.body().getBred_for()) || response.body().getBred_for().isEmpty()) {
                     dogBredFor.setText(". . . . ");
-                }
-                else
+                } else
                     dogBredFor.setText(response.body().getBred_for());
                 dogLifeSpan.setText(response.body().getLifeSpan());
                 dogTemperant.setText(response.body().getTemperament());
@@ -115,22 +126,12 @@ public class InformationActivity extends AppCompatActivity {
                 moreButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String url = "https://www.google.com/search?q=" + response.body().getName();
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
+                        urlSearch(response);
                     }
                 });
 
-                //Weight, Height의 평균 구하기
-                String avgWeight = response.body().getWeight().getMetric();
-                String avgHeight = response.body().getHeight().getMetric();
-                if (response.body().getWeight().getMetric().contains("-"))
-                    avgWeight = response.body().getWeight().getWeightAvg().toString();
-                if (response.body().getHeight().getMetric().contains("-"))
-                    avgHeight = response.body().getHeight().getHeightAvg().toString();
+                dogWeightHeight.setText(calculateAvg(response));
 
-
-                dogWeightHeight.setText("avg. " + avgWeight + "kg / " + avgHeight + "cm");
                 Glide.with(getApplicationContext())
                         .load(url) // 이미지 소스 로드
                         .thumbnail(0.1f) // 실제 이미지 크기 중 30%만 먼저 가져와서 흐릿하게 보여줌
@@ -139,22 +140,43 @@ public class InformationActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<DogDto> call, Throwable t) {
-
+                Log.d("TAG", "onFailure: API 호출 실패");
             }
         });
 
     }
+
+    //강아지 상세 정보 google에 검색해서 띄워주는 기능 구현
+    public void urlSearch(Response<DogDto> response){
+        String url = "https://www.google.com/search?q=" + response.body().getName();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
+    //Weight, Height 평균 계산
+    public String calculateAvg(Response<DogDto> response){
+        //Weight, Height의 평균 구하기
+        String avgWeight = response.body().getWeight().getMetric();
+        String avgHeight = response.body().getHeight().getMetric();
+        if (response.body().getWeight().getMetric().contains("-")){
+            avgWeight = response.body().getWeight().getWeightAvg().toString();
+        }
+        if (response.body().getHeight().getMetric().contains("-")){
+            avgHeight = response.body().getHeight().getHeightAvg().toString();
+        }
+        String result = "avg. " + avgWeight + "kg / " + avgHeight + "cm";
+        return result;
+    }
+    
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId ()) {
-            case android.R.id.home: //툴바 뒤로가기 버튼 눌렸을 때 동작
-                setResult(RESULT_OK, infoIntent);
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected (item);
+        if (item.getItemId() == android.R.id.home) { //툴바 뒤로가기 버튼 눌렸을 때 동작
+            setResult(RESULT_OK, infoIntent);
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     //기기 내의 뒤로가기 버튼 누를 때 실행

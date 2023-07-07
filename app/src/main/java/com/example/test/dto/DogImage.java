@@ -1,6 +1,6 @@
 package com.example.test.dto;
 
-public class Image {
+public class DogImage {
     private String width;
 
     private String id;

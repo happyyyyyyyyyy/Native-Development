@@ -1,6 +1,7 @@
 package com.example.test.dto;
 
-public class Weight {
+
+public class DogHeight {
     private String metric;
 
     private String imperial;
@@ -21,10 +22,10 @@ public class Weight {
         this.imperial = imperial;
     }
 
-    public Double getWeightAvg() {
+    public Double getHeightAvg() {
         String[] range = metric.split("-");
-        Double weightAvg = (Double.parseDouble(range[0].trim()) + Double.parseDouble(range[1].trim())) / 2;
-        return weightAvg;
+        Double heightAvg = (Double.parseDouble(range[0].trim()) + Double.parseDouble(range[1].trim())) / 2;
+        return heightAvg;
     }
 
     @Override

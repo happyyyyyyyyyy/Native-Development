@@ -20,30 +20,30 @@ import java.util.List;
 
 import Interface.onBookmarkListItemSelectedInterface;
 
-public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHolder> {
+public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ItemViewHolder> {
 
-    Context mContext;
     private final onBookmarkListItemSelectedInterface mListener;
-    private ArrayList<BookmarkDto> bookmarkList  = null;
+    Context mContext;
+    private ArrayList<BookmarkDto> bookmarkItemList = null;
 
     public BookMarkAdapter(Context context, onBookmarkListItemSelectedInterface mListener) {
         this.mContext = context;
         this.mListener = mListener;
-        bookmarkList = new ArrayList<>();
+        bookmarkItemList = new ArrayList<>();
     }
 
 
     @NonNull
     @Override
-    public BookMarkAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmark_dog_list, parent, false);
-        return new BookMarkAdapter.ViewHolder(view);
+        return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BookMarkAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Log.d("TAG", "onBindViewHolder: 실행?");
-        BookmarkDto bookmark = bookmarkList.get(position);
+        BookmarkDto bookmark = bookmarkItemList.get(position);
         RequestOptions crop = new RequestOptions().centerCrop();
         Glide.with(mContext)
                 .load(bookmark.getImg()) // 이미지 소스 로드
@@ -54,45 +54,39 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return bookmarkList.size();
+        return bookmarkItemList.size();
     }
 
-    public ArrayList<BookmarkDto> getBookmarkList() {
-        ArrayList<BookmarkDto> target = new ArrayList<>(bookmarkList);
+    public ArrayList<BookmarkDto> getBookmarkItemList() {
+        ArrayList<BookmarkDto> target = new ArrayList<>(bookmarkItemList);
         return target;
     }
 
-    public void setItems(List<BookmarkDto> items){
-        bookmarkList.clear();
-        bookmarkList.addAll(items);
-        for(BookmarkDto one : bookmarkList)
+    public void setItems(List<BookmarkDto> items) {
+        bookmarkItemList.clear();
+        bookmarkItemList.addAll(items);
+        for (BookmarkDto one : bookmarkItemList)
             Log.d("TAG", "setItems: " + one.getName());
 
     }
 
     //bookmark_dog_list에 있는 view 인플레이팅 및 클릭 이벤트 처리
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageButton bookmarkImg;
 
-        ViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             bookmarkImg = itemView.findViewById(R.id.bookmarkImage);
 
             //이미지 클릭 시 상세정보로 넘어가는 이벤트 구현
-            bookmarkImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.changeScreen(bookmarkList.get(getAdapterPosition()).getId(), bookmarkList.get(getAdapterPosition()).getImg(), getAdapterPosition());
-                }
+            bookmarkImg.setOnClickListener(view -> {
+                mListener.changeScreen(bookmarkItemList.get(getAdapterPosition()).getId(), bookmarkItemList.get(getAdapterPosition()).getImg(), getAdapterPosition());
             });
-
-            bookmarkImg.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    mListener.deleteBookmark(bookmarkList.get(getAdapterPosition()).getId(), getAdapterPosition());
-                    return false;
-                }
+            //이미지 길게 클릭 시 북마크에서 삭제하는 이벤트 구현
+            bookmarkImg.setOnLongClickListener(view -> {
+                mListener.deleteBookmark(bookmarkItemList.get(getAdapterPosition()).getId(), getAdapterPosition());
+                return false;
             });
         }
     }

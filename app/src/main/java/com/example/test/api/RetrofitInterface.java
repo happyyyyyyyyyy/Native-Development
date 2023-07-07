@@ -10,15 +10,17 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface Retrofit_interface {
+public interface RetrofitInterface {
 
+    //id로 api data 검색 후 결과 get
     @GET("v1/breeds/{UserID}")
-    Call<DogDto> test_api_get(
+    Call<DogDto> getSearchData(
             @Header("Authorization") String apiKey,
             @Path("UserID") String userid); //UserID에 들어가는 값 받아오기
 
+    //limit만큼 api data get
     @GET("v1/breeds")
-    Call<ArrayList<DogDto>> test_api_get2(
+    Call<ArrayList<DogDto>> getApiData(
             @Header("Authorization") String apiKey,
             @Query("limit") String limit);
 

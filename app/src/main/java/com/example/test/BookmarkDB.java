@@ -12,11 +12,12 @@ import java.util.ArrayList;
 
 public class BookmarkDB {
 
-    private DogDataDatabase db;
+    private final DogDataDatabase db;
     ArrayList<DogDto> dataList;
     int position;
     int i = 0;
-    public BookmarkDB(ArrayList<DogDto> dataList, int position, Context context){
+
+    public BookmarkDB(ArrayList<DogDto> dataList, int position, Context context) {
         this.dataList = dataList;
         this.position = position;
         Log.d("TAG", "디비 포지션" + position);
@@ -24,18 +25,13 @@ public class BookmarkDB {
     }
 
 
-    public boolean dbCheck(){
-        if(db.getDogDao().checkData(dataList.get(position).getId()))
-            return true; // 저장 되어 있음
-        else return false; // 저장 되어 있지 않음
+    public boolean dbCheck() {
+        // 저장 되어 있지 않음
+        return db.getDogDao().checkData(dataList.get(position).getId()); // 저장 되어 있음
     }
 
-    public void updateBookmark(){
+    public void updateBookmark() {
         Log.d("TAG", "updateBookmark: 업데이트 " + db.getDogDao().checkData(dataList.get(position).getId()));
-        if(db.getDogDao().checkData(dataList.get(position).getId())){
-            db.getDogDao().updateBookmarkCheck(false, dataList.get(position).getId());
-        }else{
-            db.getDogDao().updateBookmarkCheck(true, dataList.get(position).getId());
-        }
+        db.getDogDao().updateBookmarkCheck(!db.getDogDao().checkData(dataList.get(position).getId()), dataList.get(position).getId());
     }
 }
