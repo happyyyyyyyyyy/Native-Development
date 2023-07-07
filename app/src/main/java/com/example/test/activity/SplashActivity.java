@@ -58,13 +58,13 @@ public class SplashActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 switch (delayCnt) {
                     case 1:
-                        loadingText.setText("Loading .");
+                        loadingText.setText(R.string.splash_loading_text1);
                         break;
                     case 2:
-                        loadingText.setText("Loading . .");
+                        loadingText.setText(R.string.splash_loading_text2);
                         break;
                     case 3:
-                        loadingText.setText("Loading . . .");
+                        loadingText.setText(R.string.splash_loading_text3);
                         break;
                 }
                 delayCnt = (delayCnt % DELAY_COUNT) + 1;
@@ -74,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onFinish() {
                 Log.d("TAG", "onFinish: 타이머가 끝남");
                 if (db.getDogDao().getAll().isEmpty()) { //DB에 저장된 데이터가 없으면 앱 종료
-                    Toast.makeText(SplashActivity.this, "저장된 데이터가 없으므로 \n네트워크 연결 후 다시 실행해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SplashActivity.this, R.string.splash_no_data_text , Toast.LENGTH_SHORT).show();
                     finish();
                 } else { //DB에 저장된 데이터로 앱 실행
                     startActivity(intent);
@@ -85,8 +85,7 @@ public class SplashActivity extends AppCompatActivity {
         loadingTimer.start(); //로딩을 위한 타이머 시작
 
         //네트워크 체크 후 로직 실행
-        boolean isConnected = isNetworkConnected(SplashActivity.this);
-        if (!isConnected) { // 인터넷 연결 X
+        if (!isNetworkConnected(SplashActivity.this)) { // 인터넷 연결 X
             Log.d("TAG", "run: 인터넷 연결이 원활하지 않아 db의 데이터로 호출");
         } else { // 인터넷 연결 O
             getApiData(loadingTimer);
@@ -123,12 +122,12 @@ public class SplashActivity extends AppCompatActivity {
                 if (db.getDogDao().getAll().isEmpty()) {
                     db.getDogDao().deleteAll(); //DB 초기화
                     for (int i = 0; i < result.size(); i++) {
-                        insertApiData(result.get(i));
+                        insertApiDataIntoDB(result.get(i));
                     }
                 } else {
                     for (int i = 0; i < result.size(); i++) {
                         if (db.getDogDao().checkData2(result.get(i).getId()) == 0) {
-                            insertApiData(result.get(i));
+                            insertApiDataIntoDB(result.get(i));
                         }
                     }
                 }
@@ -146,7 +145,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     //DB에 받아온 API Data Insert
-    public void insertApiData(DogDto dogDto) {
+    public void insertApiDataIntoDB(DogDto dogDto) {
         DogData dogData = new DogData();
         dogData.id = dogDto.getId();
         dogData.name = dogDto.getName();

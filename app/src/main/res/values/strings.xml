@@ -32,5 +32,10 @@
     <!-- Bookmark Item List -->
     <string name="bookmark_list_bookmarkdogimage">BookmarkDogImage</string>
 
+    <!-- SplashActivity -->
+    <string name="splash_no_data_text">저장된 데이터가 없으므로\n네트워크 연결 후 다시 실행해주세요.</string>
+    <string name="splash_loading_text1">Loading .</string>
+    <string name="splash_loading_text2">Loading . .</string>
+    <string name="splash_loading_text3">Loading . . .</string>
 
 </resources>
