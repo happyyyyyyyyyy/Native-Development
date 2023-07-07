@@ -26,27 +26,30 @@
         app:layout_constraintEnd_toStartOf="@id/bookmark_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:src="@drawable/test" />
+        tools:src="@drawable/test"
+        android:contentDescription="@string/information_dog_image" />
 
     <ImageButton
         android:id="@+id/bookmark_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:contentDescription="@string/information_bookmark_button"
         android:src="@drawable/unselected_bookmark_icon"
         app:layout_constraintBottom_toBottomOf="@id/dogImg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dogImg" />
+        app:layout_constraintStart_toEndOf="@id/dogImg"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/bredFor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/text_foot_icon"
-        android:text=" Bred for"
+        android:text="@string/information_bred_for"
         app:layout_constraintStart_toStartOf="@id/dogImg"
-        app:layout_constraintTop_toBottomOf="@id/dogImg" />
+        app:layout_constraintTop_toBottomOf="@id/dogImg"
+        app:drawableStartCompat="@drawable/text_foot_icon" />
 
     <TextView
         android:id="@+id/bredForData"
@@ -62,10 +65,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/text_foot_icon"
-        android:text=" Life span"
+        android:text="@string/information_life_span"
         app:layout_constraintStart_toStartOf="@id/dogImg"
-        app:layout_constraintTop_toBottomOf="@id/bredForData" />
+        app:layout_constraintTop_toBottomOf="@id/bredForData"
+        app:drawableLeftCompat="@drawable/text_foot_icon" />
 
     <TextView
         android:id="@+id/lifeSpanData"
@@ -81,10 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/text_foot_icon"
-        android:text=" Temperant"
+        android:text="@string/information_temperant"
         app:layout_constraintStart_toStartOf="@id/dogImg"
-        app:layout_constraintTop_toBottomOf="@id/lifeSpanData" />
+        app:layout_constraintTop_toBottomOf="@id/lifeSpanData"
+        app:drawableLeftCompat="@drawable/text_foot_icon" />
 
     <TextView
         android:id="@+id/temperantData"
@@ -100,10 +103,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/text_foot_icon"
-        android:text=" Weight/Height"
+        android:text="@string/information_weight_height"
         app:layout_constraintStart_toStartOf="@id/dogImg"
-        app:layout_constraintTop_toBottomOf="@id/temperantData" />
+        app:layout_constraintTop_toBottomOf="@id/temperantData"
+        app:drawableLeftCompat="@drawable/text_foot_icon" />
 
     <TextView
         android:id="@+id/weightAndheightData"
@@ -119,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="Show more information"
+        android:text="@string/information_show_more"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

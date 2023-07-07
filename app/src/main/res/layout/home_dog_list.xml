@@ -15,16 +15,17 @@
         android:src="@drawable/test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/home_list_dog_image" />
 
     <TextView
         android:id="@+id/name_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:gravity="center_vertical"
-        android:text="멍멍이 이름"
-        android:textSize="18dp"
+        android:text="@string/home_list_name"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/bred_for_text"
         app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
         app:layout_constraintStart_toEndOf="@+id/dogImg"
@@ -34,12 +35,12 @@
         android:id="@+id/bred_for_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="멍멍이 품종"
-        android:textSize="18dp"
+        android:text="@string/home_list_bred_for"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
         app:layout_constraintStart_toEndOf="@+id/dogImg"
@@ -53,7 +54,8 @@
         android:src="@drawable/unselected_bookmark_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/home_list_bookmark_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
