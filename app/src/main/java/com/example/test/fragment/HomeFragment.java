@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         });
 
         //처음 recyclerView에 데이터 set
-        homeAdapter = new HomeAdapter(ct, this);
+        homeAdapter = new HomeAdapter(this);
         apiDataList = new ArrayList<>();
         setRecyclerView();
 

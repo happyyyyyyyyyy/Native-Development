@@ -26,7 +26,7 @@ import Interface.onListItemSelectedInterface;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final onListItemSelectedInterface mListener;
-    private Context mContext;
+    private Context context;
     private ArrayList<DogDto> homeItemList = null;
     private enum ViewType{
         ITEM(0),
@@ -36,8 +36,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.value = i;
         }
     }
-    public HomeAdapter(Context context, onListItemSelectedInterface listener) {
-        this.mContext = context;
+    public HomeAdapter(onListItemSelectedInterface listener) {
         this.mListener = listener;
         homeItemList = new ArrayList<>();
     }
@@ -45,11 +44,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         if (viewType == ViewType.ITEM.value) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_dog_list, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.home_dog_list, parent, false);
             return new ItemViewHolder(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_dog_loading, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.home_dog_loading, parent, false);
             return new LoadingViewHolder(view);
         }
     }
@@ -123,13 +123,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
         }
 
+        //데이터 set
         public void bindData(DogDto dog) {
             text_name.setText(dog.getName());
             text_bred.setText(Objects.requireNonNullElse(dog.getBred_for(), ". . . . "));
             button.setImageResource(dog.getBookmark_img());
 
             RequestOptions circleCrop = new RequestOptions().circleCrop();
-            Glide.with(mContext)
+            Glide.with(context)
                     .load(dog.getImage().getUrl())
                     .apply(circleCrop)
                     .thumbnail(0.1f)
