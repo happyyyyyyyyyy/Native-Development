@@ -2,6 +2,7 @@ package com.example.test.activity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,9 @@ import com.example.test.fragment.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
+    private boolean isConnected;
     //바텀 네비게이션 객체 변수
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +36,32 @@ public class MainActivity extends AppCompatActivity {
                 if (menuItem.getItemId() == R.id.home)
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainFrame, new HomeFragment()).commit();
                 else if (menuItem.getItemId() == R.id.bookmark) {
+                    //네트워크 확인 thread 실행
+                    NetworkThread networkThread = new NetworkThread();
+                    networkThread.start();
+                    try {
+                        //네트워크 확인 전까지 기다림
+                        networkThread.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     //네트워크 연결 안되면 경고창
-                    boolean isConnected = SplashActivity.isNetworkConnected(MainActivity.this);
                     if (!isConnected) {
                         showNetworkWarningDialog();
                     }
+                    //북마크로 화면 전환
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainFrame, new BookmarkFragment()).commit();
                 }
                 return true;
             }
         });
+    }
+
+    public class NetworkThread extends Thread {
+        public void run() {
+            isConnected = SplashActivity.isNetworkConnected(MainActivity.this);
+            Log.d("TAG", "run: 네트워크 확인");
+        }
     }
 
     private void showNetworkWarningDialog() {
