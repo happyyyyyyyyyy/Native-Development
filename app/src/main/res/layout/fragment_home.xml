@@ -8,7 +8,7 @@
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/splash_screen"
@@ -25,11 +25,11 @@
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
         app:queryHint="Type something..." />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dog_recycler_view"
+        android:id="@+id/dogRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"

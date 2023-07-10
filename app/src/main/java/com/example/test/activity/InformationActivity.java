@@ -53,7 +53,7 @@ public class InformationActivity extends AppCompatActivity {
         initializeViews(); //view Inflating
 
         //액션바 뒤로가기 설정
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolBar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -98,7 +98,7 @@ public class InformationActivity extends AppCompatActivity {
 
     private void initializeViews() {
         dogImg = findViewById(R.id.dogImg);
-        bookmarkButton = findViewById(R.id.bookmark_button);
+        bookmarkButton = findViewById(R.id.bookmarkButton);
         dogBredFor = findViewById(R.id.bredForData);
         dogLifeSpan = findViewById(R.id.lifeSpanData);
         dogTemperant = findViewById(R.id.temperantData);

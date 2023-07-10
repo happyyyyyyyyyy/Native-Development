@@ -19,20 +19,20 @@
         android:contentDescription="@string/home_list_dog_image" />
 
     <TextView
-        android:id="@+id/name_text"
+        android:id="@+id/nameText"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         android:gravity="center_vertical"
         android:text="@string/home_list_name"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/bred_for_text"
-        app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
+        app:layout_constraintBottom_toTopOf="@id/bredForText"
+        app:layout_constraintEnd_toStartOf="@+id/bookmarkButton"
         app:layout_constraintStart_toEndOf="@+id/dogImg"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/bred_for_text"
+        android:id="@+id/bredForText"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
@@ -42,12 +42,12 @@
         android:text="@string/home_list_bred_for"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
+        app:layout_constraintEnd_toStartOf="@+id/bookmarkButton"
         app:layout_constraintStart_toEndOf="@+id/dogImg"
-        app:layout_constraintTop_toBottomOf="@id/name_text" />
+        app:layout_constraintTop_toBottomOf="@id/nameText" />
 
     <ImageButton
-        android:id="@+id/bookmark_button"
+        android:id="@+id/bookmarkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#ffffff"

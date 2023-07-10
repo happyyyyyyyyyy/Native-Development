@@ -27,21 +27,21 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNav);
 
         //Fragment매니저를 불러와서
-        getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.mainFrame, new HomeFragment()).commit();
 
         //바텀 네비게이션에서 아이템이 클릭 됐을 때의 리스너를 설정
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.home)
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new HomeFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFrame, new HomeFragment()).commit();
                 else if (menuItem.getItemId() == R.id.bookmark) {
                     //네트워크 연결 안되면 경고창
                     boolean isConnected = SplashActivity.isNetworkConnected(MainActivity.this);
                     if (!isConnected) {
                         showNetworkWarningDialog();
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new BookmarkFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFrame, new BookmarkFragment()).commit();
                 }
                 return true;
             }

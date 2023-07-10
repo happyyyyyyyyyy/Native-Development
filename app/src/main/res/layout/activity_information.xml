@@ -7,7 +7,7 @@
     tools:context=".activity.InformationActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/splash_screen"
@@ -23,14 +23,14 @@
         android:layout_height="200dp"
         android:layout_marginTop="30dp"
         android:scaleType="center"
-        app:layout_constraintEnd_toStartOf="@id/bookmark_button"
+        app:layout_constraintEnd_toStartOf="@id/bookmarkButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"
         tools:src="@drawable/test"
         android:contentDescription="@string/information_dog_image" />
 
     <ImageButton
-        android:id="@+id/bookmark_button"
+        android:id="@+id/bookmarkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"

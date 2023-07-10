@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         intent = new Intent(SplashActivity.this, MainActivity.class);
 
         //인플레이팅
-        loadingText = findViewById(R.id.text_loading);
+        loadingText = findViewById(R.id.textLoading);
         ImageView splashImageView = findViewById(R.id.icon);
 
         //스플래시 화면에 있는 원형 아이콘 처리

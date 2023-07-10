@@ -100,9 +100,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            text_name = itemView.findViewById(R.id.name_text);
-            text_bred = itemView.findViewById(R.id.bred_for_text);
-            button = itemView.findViewById(R.id.bookmark_button);
+            text_name = itemView.findViewById(R.id.nameText);
+            text_bred = itemView.findViewById(R.id.bredForText);
+            button = itemView.findViewById(R.id.bookmarkButton);
             dogImg = itemView.findViewById(R.id.dogImg);
 
 

@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
 
         searchView = v.findViewById(R.id.search);
         noDataText = v.findViewById(R.id.noDataText);
-        recyclerView = v.findViewById(R.id.dog_recycler_view);
+        recyclerView = v.findViewById(R.id.dogRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)); // 상하 스크롤
 
         //recyclerView 페이징 처리
