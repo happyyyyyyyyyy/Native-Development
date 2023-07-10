@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +36,7 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
     private BookMarkAdapter bookmarkAdapter;
     private Context ct;
     private RecyclerView bookmarkRecyclerView;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     private List<BookmarkDto> bookmarkDBInfo;
     private TextView totalText;
     private DogDataDatabase db;
@@ -58,6 +61,18 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
         totalText.setText(bookmarkInfo.size() + " results in bookmark");
         bookmarkAdapter.notifyDataSetChanged();
 
+        //상세 정보 화면에서 다시 돌아올 때 북마크 정보 새로고침
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) { //resultCode가 0으로 넘어왔다면
+                // 새로고침 작업 수행
+                bookmarkDBInfo = db.getDogDao().getBookmarkAll();
+                ArrayList<BookmarkDto> bookmarkInfo2 = new ArrayList<>(bookmarkDBInfo);
+                bookmarkAdapter.setItems(bookmarkInfo2);
+                totalText.setText(bookmarkAdapter.getItemCount() + " results in bookmark");
+                bookmarkAdapter.notifyDataSetChanged();
+            }
+        });
+
         return v;
     }
 
@@ -69,7 +84,7 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
         intent.putExtra("id", id);
         intent.putExtra("imgUrl", imgUrl);
         intent.putExtra("position", position);
-        startActivityForResult(intent, 1);
+        activityResultLauncher.launch(intent);
     }
 
     //View 길게 누르면 북마크 삭제 이벤트 구현
@@ -92,18 +107,5 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
                 .setNegativeButton("CANCEL", null);
         AlertDialog msgDlg = msgBuilder.create();
         msgDlg.show();
-    }
-
-    //상세 정보 화면에서 다시 돌아올 때 북마크 정보 새로고침
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // 새로고침 작업 수행
-            bookmarkDBInfo = db.getDogDao().getBookmarkAll();
-            ArrayList<BookmarkDto> bookmarkInfo = new ArrayList<>(bookmarkDBInfo);
-            bookmarkAdapter.setItems(bookmarkInfo);
-            totalText.setText(bookmarkAdapter.getItemCount() + " results in bookmark");
-            bookmarkAdapter.notifyDataSetChanged();
-        }
     }
 }

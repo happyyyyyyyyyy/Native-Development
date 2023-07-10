@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.test.R;
 import com.example.test.api.RetrofitClient;
 import com.example.test.dto.DogDto;
+import com.example.test.fragment.HomeFragment;
 import com.example.test.room.DogDataDatabase;
 
 import java.util.Objects;
@@ -44,6 +45,7 @@ public class InformationActivity extends AppCompatActivity {
     private Intent infoIntent;
     private Toolbar toolbar;
     private int id;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +64,8 @@ public class InformationActivity extends AppCompatActivity {
         //intent 생성
         infoIntent = getIntent();
         id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
-        int position = infoIntent.getIntExtra("position", 0);
-        infoIntent.putExtra("position", position);
-        infoIntent.putExtra("id", id);
+        position = infoIntent.getIntExtra("position", 0);
         url = infoIntent.getStringExtra("imgUrl");
-
 
         //화면 전환 시 북마크 체크 후 이미지 set
         db = Room.databaseBuilder(this, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
@@ -172,7 +171,10 @@ public class InformationActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) { //툴바 뒤로가기 버튼 눌렸을 때 동작
-            setResult(RESULT_OK, infoIntent);
+            Intent finishIntent = new Intent(getApplicationContext(), HomeFragment.class);
+            finishIntent.putExtra("position", position);
+            finishIntent.putExtra("id", id);
+            setResult(RESULT_OK, finishIntent);
             finish();
             return true;
         }
