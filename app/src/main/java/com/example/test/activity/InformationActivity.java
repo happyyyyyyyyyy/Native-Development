@@ -125,7 +125,7 @@ public class InformationActivity extends AppCompatActivity {
                 moreButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        urlSearch(response);
+                        searchUrl(response);
                     }
                 });
 
@@ -146,7 +146,7 @@ public class InformationActivity extends AppCompatActivity {
     }
 
     //강아지 상세 정보 google에 검색해서 띄워주는 기능 구현
-    public void urlSearch(Response<DogDto> response){
+    public void searchUrl(Response<DogDto> response){
         String url = "https://www.google.com/search?q=" + response.body().getName();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);

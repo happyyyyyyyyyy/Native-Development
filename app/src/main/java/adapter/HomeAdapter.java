@@ -26,11 +26,16 @@ import Interface.onListItemSelectedInterface;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final onListItemSelectedInterface mListener;
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1; //Enum으로
     private Context mContext;
     private ArrayList<DogDto> homeItemList = null;
-
+    private enum ViewType{
+        ITEM(0),
+        LOADING(1);
+        private final int value;
+        ViewType(int i) {
+            this.value = i;
+        }
+    }
     public HomeAdapter(Context context, onListItemSelectedInterface listener) {
         this.mContext = context;
         this.mListener = listener;
@@ -40,7 +45,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_ITEM) {
+        if (viewType == ViewType.ITEM.value) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_dog_list, parent, false);
             return new ItemViewHolder(view);
         } else {
@@ -71,7 +76,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return homeItemList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return homeItemList.get(position) == null ? ViewType.LOADING.value : ViewType.ITEM.value;
     }
 
 
