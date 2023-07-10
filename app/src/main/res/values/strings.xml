@@ -38,4 +38,7 @@
     <string name="splash_loading_text2">Loading . .</string>
     <string name="splash_loading_text3">Loading . . .</string>
 
+    <!-- MainActivity -->
+    <string name="main_dialog_text">네트워크 연결이 원활하지 않아\n이미지가 로딩되지 않을 수도 있습니다.</string>
+
 </resources>

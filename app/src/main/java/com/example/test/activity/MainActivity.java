@@ -1,7 +1,6 @@
 package com.example.test.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -50,12 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNetworkWarningDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("네트워크 연결이 원활하지 않아 이미지가 로딩되지 않을 수도 있습니다.")
-                .setCancelable(false)
-                .setPositiveButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                }).show();
+        builder.setMessage(R.string.main_dialog_text)
+                .setPositiveButton("OK", null).show();
     }
 }
