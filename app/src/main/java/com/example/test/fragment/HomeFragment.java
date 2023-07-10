@@ -99,8 +99,9 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         });
 
         //처음 recyclerView에 데이터 set
-        homeAdapter = new HomeAdapter(this);
+        homeAdapter = new HomeAdapter();
         apiDataList = new ArrayList<>();
+        homeAdapter.setListener(this);
         setRecyclerView();
 
         //searchView Event 구현

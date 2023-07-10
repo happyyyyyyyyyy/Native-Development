@@ -25,7 +25,7 @@ import java.util.Objects;
 import Interface.onListItemSelectedInterface;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final onListItemSelectedInterface mListener;
+    private onListItemSelectedInterface listener = null;
     private Context context;
     private ArrayList<DogDto> homeItemList = null;
     private enum ViewType{
@@ -36,8 +36,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.value = i;
         }
     }
-    public HomeAdapter(onListItemSelectedInterface listener) {
-        this.mListener = listener;
+    public HomeAdapter() {
         homeItemList = new ArrayList<>();
     }
 
@@ -79,6 +78,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return homeItemList.get(position) == null ? ViewType.LOADING.value : ViewType.ITEM.value;
     }
 
+    public void setListener(onListItemSelectedInterface listener){
+        this.listener = listener;
+    }
 
     public void setItems(List<DogDto> items) {
         homeItemList.clear();
@@ -109,18 +111,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             text_bred = itemView.findViewById(R.id.bredForText);
             button = itemView.findViewById(R.id.bookmarkButton);
             dogImg = itemView.findViewById(R.id.dogImg);
-
-
-            //북마크 클릭 시 이벤트 처리
-            button.setOnClickListener(view -> {
-                mListener.onItemSelected(view, getAdapterPosition(), homeItemList);
-                Log.d("test", "포지션=" + getAdapterPosition());
-            });
-
-            //itemView 클릭 시 상세 정보로 넘어 가는 이벤트 처리
-            itemView.setOnClickListener(view -> {
-                mListener.changeScreen(homeItemList.get(getAdapterPosition()).getId(), homeItemList.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
-            });
         }
 
         //데이터 set
@@ -135,6 +125,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .apply(circleCrop)
                     .thumbnail(0.1f)
                     .into(dogImg);
+
+            //북마크 클릭 시 이벤트 처리
+            button.setOnClickListener(view -> {
+                if (listener != null) {
+                    listener.onItemSelected(view, getAdapterPosition(), homeItemList);
+                    Log.d("test", "포지션=" + getAdapterPosition());
+                }
+            });
+
+            //itemView 클릭 시 상세 정보로 넘어 가는 이벤트 처리
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    listener.changeScreen(homeItemList.get(getAdapterPosition()).getId(), homeItemList.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
+                }
+            });
         }
     }
 
