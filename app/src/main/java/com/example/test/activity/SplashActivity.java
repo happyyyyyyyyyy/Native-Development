@@ -74,13 +74,13 @@ public class SplashActivity extends AppCompatActivity {
                                 public void run() {
                                     switch (delayCnt) {
                                         case 1:
-                                            loadingText.setText(R.string.splash_loading_text1);
+                                            loadingText.setText(getString(R.string.splash_loading_text) + " .");
                                             break;
                                         case 2:
-                                            loadingText.setText(R.string.splash_loading_text2);
+                                            loadingText.setText(getString(R.string.splash_loading_text) + " . .");
                                             break;
                                         case 3:
-                                            loadingText.setText(R.string.splash_loading_text3);
+                                            loadingText.setText(getString(R.string.splash_loading_text) + " . . .");
                                             break;
                                     }
                                 }
@@ -88,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
                             delayCnt = (delayCnt % DELAY_COUNT) + 1;
 
                             // 스레드에게 수행시킬 동작들 구현
-                            Thread.sleep(1000); // 1초간 Thread를 잠재운다
+                            Thread.sleep(500); // 0.5초간 Thread를 잠재운다
                             i++;
                             Log.d("TAG", "시간" + i);
                         }

@@ -27,7 +27,7 @@ import Interface.onListItemSelectedInterface;
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final onListItemSelectedInterface mListener;
     private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
+    private final int VIEW_TYPE_LOADING = 1; //Enum으로
     private Context mContext;
     private ArrayList<DogDto> homeItemList = null;
 

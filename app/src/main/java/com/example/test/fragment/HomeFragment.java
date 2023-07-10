@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         recyclerView.setAdapter(homeAdapter);
     }
 
-    //RecyclerView 클릭 시 이벤트 처리 부분
+    //RecyclerView 클릭 시 이벤트 처리 부분 콜백함수
     @Override
     public void onItemSelected(View v, int position, ArrayList<DogDto> arrayList) {
         boolean checkData = false; // 북마크 상태 저장 변수 true -> 북마크 O false -> 북마크 X
