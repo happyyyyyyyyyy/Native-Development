@@ -50,9 +50,9 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
 
     private TextView noDataText;
     private SearchView searchView;
-    private int pageSize = 15;
+    private final int PAGE_SIZE = 15;
     private int pageNumber = 1;
-    private int offset = (pageNumber - 1) * pageSize;
+    private int pageOffset;
     private boolean searchFlag = false;
     private boolean isLoading = false;
 
@@ -157,7 +157,8 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
     //처음 recyclerView에 데이터 set
     public void setRecyclerView() {
         //room에 저장된 dogData를 recyclerView에 set
-        List<DogData> dogDataList = db.getDogDao().getItemsByPage(pageSize, offset);//DB에 있는 Data를 List에 저장
+        pageOffset = (pageNumber - 1) * PAGE_SIZE;
+        List<DogData> dogDataList = db.getDogDao().getItemsByPage(PAGE_SIZE, pageOffset);//DB에 있는 Data를 List에 저장
         pageNumber++;
         int i = 0;
         //for문을 통해 DogDto 객체에 저장
@@ -248,8 +249,8 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
 
     //LoadingIndicator 구현
     private void loadMoreData() {
-        offset = (pageNumber++ - 1) * pageSize; // 페이징 offset
-        List<DogData> dogDataList = db.getDogDao().getItemsByPage(pageSize, offset); //DB에 있는 Data를 List에 저장
+        pageOffset = (pageNumber++ - 1) * PAGE_SIZE; // 페이징 offset
+        List<DogData> dogDataList = db.getDogDao().getItemsByPage(PAGE_SIZE, pageOffset); //DB에 있는 Data를 List에 저장
         if (dogDataList.isEmpty()) {
             Toast.makeText(ct, "No Data", Toast.LENGTH_SHORT).show();
         } else {
