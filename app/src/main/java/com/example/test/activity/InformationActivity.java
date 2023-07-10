@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.example.test.BuildConfig;
 import com.example.test.R;
 import com.example.test.api.RetrofitClient;
 import com.example.test.dto.DogDto;
@@ -107,7 +108,7 @@ public class InformationActivity extends AppCompatActivity {
 
     public void getApiData(){
         //API로 상세 정보 데이터 GET
-        call = RetrofitClient.getApiService().getSearchData("live_mtPILdV1Vd1b0kcRxjsB1KVMOOHipR18xuUthvy0Y8gH9ZGvNW69RrCip5CErxth", id + "");
+        call = RetrofitClient.getApiService().getSearchData(BuildConfig.DOG_API_KEY, id + "");
         call.enqueue(new Callback<DogDto>() {
             @Override
             public void onResponse(Call<DogDto> call, Response<DogDto> response) {

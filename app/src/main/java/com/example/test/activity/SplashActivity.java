@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.test.BuildConfig;
 import com.example.test.R;
 import com.example.test.api.RetrofitClient;
 import com.example.test.dto.DogDto;
@@ -136,7 +137,7 @@ public class SplashActivity extends AppCompatActivity {
         //api
         public void getApiData() {
             //Dog API에서 값 가져오기
-            Call<ArrayList<DogDto>> call = RetrofitClient.getApiService().getApiData("live_mtPILdV1Vd1b0kcRxjsB1KVMOOHipR18xuUthvy0Y8gH9ZGvNW69RrCip5CErxth", "500");
+            Call<ArrayList<DogDto>> call = RetrofitClient.getApiService().getApiData(BuildConfig.DOG_API_KEY, "500");
             call.enqueue(new Callback<ArrayList<DogDto>>() {
                 @Override
                 public void onResponse(Call<ArrayList<DogDto>> call, Response<ArrayList<DogDto>> response) {
