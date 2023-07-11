@@ -52,29 +52,38 @@ public class InformationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
+        db = Room.databaseBuilder(this, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
 
-        initializeViews(); //view Inflating
+        initializeTextViews(); //view Inflating
+        initializeActionBar();
+        initializeIntent();
+        initializeBookmarkButton();
+        checkBookmark();
+        //API에서 상세 정보 검색 후 set
+        setApiData();
+    }
 
+
+    private void initializeTextViews() {
+        dogImg = findViewById(R.id.dogImg);
+        dogBredFor = findViewById(R.id.bredForData);
+        dogLifeSpan = findViewById(R.id.lifeSpanData);
+        dogTemperant = findViewById(R.id.temperantData);
+        dogWeightHeight = findViewById(R.id.weightAndheightData);
+        moreButton = findViewById(R.id.moreButton);
+    }
+
+    private void initializeActionBar(){
         //액션바 뒤로가기 설정
         toolbar = findViewById(R.id.toolBar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
 
-        //intent 생성
-        infoIntent = getIntent();
-        id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
-        position = infoIntent.getIntExtra("position", 0);
-        url = infoIntent.getStringExtra("imgUrl");
-
-        //화면 전환 시 북마크 체크 후 이미지 set
-        db = Room.databaseBuilder(this, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
-        if (db.getDogDao().checkData(id))
-            bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
-        else
-            bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
-
+    private void initializeBookmarkButton(){
+        bookmarkButton = findViewById(R.id.bookmarkButton);
         //북마크 버튼 클릭 시 이벤트 처리
         bookmarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,24 +98,25 @@ public class InformationActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //API에서 상세 정보 검색
-        getApiData();
-
     }
 
-
-    private void initializeViews() {
-        dogImg = findViewById(R.id.dogImg);
-        bookmarkButton = findViewById(R.id.bookmarkButton);
-        dogBredFor = findViewById(R.id.bredForData);
-        dogLifeSpan = findViewById(R.id.lifeSpanData);
-        dogTemperant = findViewById(R.id.temperantData);
-        dogWeightHeight = findViewById(R.id.weightAndheightData);
-        moreButton = findViewById(R.id.moreButton);
+    private void initializeIntent(){
+        //intent 생성
+        infoIntent = getIntent();
+        id = infoIntent.getIntExtra("id", 0); //id 값 받아오기
+        position = infoIntent.getIntExtra("position", 0);
+        url = infoIntent.getStringExtra("imgUrl");
     }
 
-    public void getApiData(){
+    private void checkBookmark(){
+        //화면 전환 시 북마크 체크 후 이미지 set
+        if (db.getDogDao().checkData(id))
+            bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
+        else
+            bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
+    }
+
+    public void setApiData(){
         //API로 상세 정보 데이터 GET
         call = RetrofitClient.getApiService().getSearchData(BuildConfig.DOG_API_KEY, id + "");
         call.enqueue(new Callback<DogDto>() {

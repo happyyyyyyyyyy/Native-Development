@@ -35,9 +35,11 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
 
     private BookMarkAdapter bookmarkAdapter;
     private Context ct;
+    private View v;
     private RecyclerView bookmarkRecyclerView;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private List<BookmarkDto> bookmarkDBInfo;
+    private ArrayList<BookmarkDto> bookmarkInfo;
     private TextView totalText;
     private DogDataDatabase db;
 
@@ -45,22 +47,36 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_bookmark, container, false);
+        v = inflater.inflate(R.layout.fragment_bookmark, container, false);
         ct = container.getContext();
         db = Room.databaseBuilder(ct, DogDataDatabase.class, "DogData").allowMainThreadQueries().build();
-        totalText = v.findViewById(R.id.countText);
+
+        initializeBookmarkRecyclerView();
+        initializeTotalTextView();
+        setActivityResultLauncher();
+
+        return v;
+    }
+
+    private void initializeBookmarkRecyclerView(){
         bookmarkRecyclerView = v.findViewById(R.id.bookmarkRecyclerGridView);
         bookmarkRecyclerView.setLayoutManager(new GridLayoutManager(ct, 3));
 
         bookmarkAdapter = new BookMarkAdapter(ct, this);
         bookmarkDBInfo = db.getDogDao().getBookmarkAll();
-        ArrayList<BookmarkDto> bookmarkInfo = new ArrayList<>(bookmarkDBInfo);
+        bookmarkInfo = new ArrayList<>(bookmarkDBInfo);
 
         bookmarkAdapter.setItems(bookmarkInfo);
         bookmarkRecyclerView.setAdapter(bookmarkAdapter);
-        totalText.setText(bookmarkInfo.size() + " results in bookmark");
         bookmarkAdapter.notifyDataSetChanged();
+    }
 
+    private void initializeTotalTextView(){
+        totalText = v.findViewById(R.id.countText);
+        totalText.setText(bookmarkInfo.size() + " results in bookmark");
+    }
+
+    private void  setActivityResultLauncher(){
         //상세 정보 화면에서 다시 돌아올 때 북마크 정보 새로고침
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) { //resultCode가 0으로 넘어왔다면
@@ -72,8 +88,6 @@ public class BookmarkFragment extends Fragment implements onBookmarkListItemSele
                 bookmarkAdapter.notifyDataSetChanged();
             }
         });
-
-        return v;
     }
 
 

@@ -41,20 +41,21 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         db = Room.databaseBuilder(this, DogDataDatabase.class, "DogData").allowMainThreadQueries().build(); //db 빌드
-        intent = new Intent(SplashActivity.this, MainActivity.class);
 
-        //인플레이팅
-        loadingText = findViewById(R.id.textLoading);
-        ImageView splashImageView = findViewById(R.id.icon);
-
-        //스플래시 화면에 있는 원형 아이콘 처리
-        splashImageView.setImageResource(R.drawable.splash_icon);
+        initialize();
 
         //delayTime 동안 Loading text 변경 Thread 생성
         LoadingThread loading = new LoadingThread();
         loading.start();
+    }
+
+    private void initialize(){
+        loadingText = findViewById(R.id.textLoading);
+        ImageView splashImageView = findViewById(R.id.icon);
+        //스플래시 화면에 있는 원형 아이콘 처리
+        splashImageView.setImageResource(R.drawable.splash_icon);
+        intent = new Intent(SplashActivity.this, MainActivity.class);
     }
 
     //로딩 화면 애니메이션 thread 구현
