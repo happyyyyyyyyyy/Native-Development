@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import Interface.onListItemSelectedInterface;
+import Interface.OnListItemSelectedInterface;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private onListItemSelectedInterface listener = null;
+    private OnListItemSelectedInterface listener = null;
     private Context context;
-    private ArrayList<DogDto> homeItemList = null;
+    private final ArrayList<DogDto> homeItemList;
     private enum ViewType{
         ITEM(0),
         LOADING(1);
@@ -65,12 +65,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return homeItemList == null ? 0 : homeItemList.size();
+        return homeItemList.size();
     }
 
     public ArrayList<DogDto> getHomeItemList() {
-        ArrayList<DogDto> target = new ArrayList<>(homeItemList);
-        return target;
+        return new ArrayList<>(homeItemList);
     }
 
     @Override
@@ -78,28 +77,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return homeItemList.get(position) == null ? ViewType.LOADING.value : ViewType.ITEM.value;
     }
 
-    public void setListener(onListItemSelectedInterface listener){
+    public void setListener(OnListItemSelectedInterface listener){
         this.listener = listener;
     }
 
     public void setItems(List<DogDto> items) {
         homeItemList.clear();
         homeItemList.addAll(items);
-//        for(DogDto one : arrayList2)
-//            Log.d("TAG", "setItems: " + one.getName());
         notifyDataSetChanged();
     }
 
-    //얕은 복사를 깊은 복사로 해결하는 방법
-//    public void setItems(ArrayList<DogDto> items){
-//        arrayList2.clear();
-//        arrayList2.addAll(items);
-//        for(DogDto one : arrayList2)
-//            Log.d("TAG", "setItems: " + one.getName());
-//        notifyDataSetChanged();
-//    }
-
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    private class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView text_name;
         TextView text_bred;
         ImageButton button;
@@ -129,7 +117,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             //북마크 클릭 시 이벤트 처리
             button.setOnClickListener(view -> {
                 if (listener != null) {
-                    listener.onItemSelected(view, getAdapterPosition(), homeItemList);
+                    listener.onRecyclerViewBookmarkSelected(view, getAdapterPosition(), homeItemList);
                     Log.d("test", "포지션=" + getAdapterPosition());
                 }
             });
@@ -137,7 +125,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             //itemView 클릭 시 상세 정보로 넘어 가는 이벤트 처리
             itemView.setOnClickListener(view -> {
                 if (listener != null) {
-                    listener.changeScreen(homeItemList.get(getAdapterPosition()).getId(), homeItemList.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
+                    listener.onRecyclerViewItemSelected(homeItemList.get(getAdapterPosition()).getId(), homeItemList.get(getAdapterPosition()).getImage().getUrl(), getAdapterPosition());
                 }
             });
         }

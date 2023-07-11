@@ -32,18 +32,16 @@ import com.example.test.room.DogDataDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import Interface.onListItemSelectedInterface;
+import Interface.OnListItemSelectedInterface;
 import adapter.HomeAdapter;
-import retrofit2.Call;
 
 
-public class HomeFragment extends Fragment implements onListItemSelectedInterface {
+public class HomeFragment extends Fragment implements OnListItemSelectedInterface {
     private RecyclerView recyclerView;
     private HomeAdapter homeAdapter;
     private Context ct;
     private View v;
     private DogDataDatabase db;
-    private Call<ArrayList<DogDto>> call;
     private ArrayList<DogDto> apiDataList;
     private ArrayList<DogDto> searchList;
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -124,6 +122,9 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
                         if (!isLoading) {
                             loadMoreData();
                         }
+                    if(isLoading){
+                        Toast.makeText(ct, "No Data", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -161,10 +162,14 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
 
     //RecyclerView 클릭 시 이벤트 처리 부분 콜백함수
     @Override
-    public void onItemSelected(View v, int position, ArrayList<DogDto> arrayList) {
-        boolean checkData = false; // 북마크 상태 저장 변수 true -> 북마크 O false -> 북마크 X
+    public void onRecyclerViewBookmarkSelected(View v, int position, ArrayList<DogDto> arrayList) {
+        setBookmark(position, arrayList);
+    }
+
+    private void setBookmark(int position, ArrayList<DogDto> arrayList){
+        // 북마크 상태 저장 변수 true -> 북마크 O false -> 북마크 X
         BookmarkDB bookmarkDB = new BookmarkDB(arrayList, position, ct);
-        checkData = bookmarkDB.dbCheck(); // 데이터가 북마크 되어 있는 상태인지 확인
+        boolean checkData = bookmarkDB.dbCheck(); // 데이터가 북마크 되어 있는 상태인지 확인
 
         if (checkData) { // 북마크에 저장 되어 있음 -> 삭제 작업
             arrayList.get(position).setBookmark_img(R.drawable.unselected_bookmark_icon);
@@ -187,8 +192,13 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
                 ArrayList<DogDto> bookmarkInfo = new ArrayList<>();
                 int i = 0;
                 for (DogDto dog : homeAdapter.getHomeItemList()) {
+                    if(dog != null){
                     bookmarkInfo.add(new DogDto(dog));
                     bookmarkInfo.get(i++).setImage(dog.getImage());
+                    }
+                    else {
+                        bookmarkInfo.add(null);
+                    }
                 }
                 if (db.getDogDao().checkData(data.getIntExtra("id", -1))) {
                     bookmarkInfo.get(data.getIntExtra("position", -1)).setBookmark_img(R.drawable.selected_bookmark_icon);
@@ -201,9 +211,14 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         });
     }
 
-    //상세 정보 화면으로 넘어 가는 기능 구현
+
     @Override
-    public void changeScreen(int id, String imgUrl, int position) {
+    public void onRecyclerViewItemSelected(int id, String imgUrl, int position) {
+        switchToInfoScreen(id, imgUrl, position);
+    }
+
+    //상세 정보 화면으로 넘어 가는 기능 구현
+    private void switchToInfoScreen(int id, String imgUrl, int position){
         Intent intent = new Intent(ct, InformationActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("imgUrl", imgUrl);
@@ -263,7 +278,6 @@ public class HomeFragment extends Fragment implements onListItemSelectedInterfac
         pageOffset = (pageNumber++ - 1) * PAGE_SIZE; // 페이징 offset
         List<DogData> dogDataList = db.getDogDao().getItemsByPage(PAGE_SIZE, pageOffset); //DB에 있는 Data를 List에 저장
         if (dogDataList.isEmpty()) {
-            Toast.makeText(ct, "No Data", Toast.LENGTH_SHORT).show();
             apiDataList.remove(apiDataList.size()-1);
             homeAdapter.setItems(apiDataList);
             isLoading = true;

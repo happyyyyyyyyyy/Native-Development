@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -22,6 +23,7 @@ import com.example.test.room.DogData;
 import com.example.test.room.DogDataDatabase;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,7 +31,6 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private boolean isRunning = true;
     private static final int DELAY_COUNT = 3;
     private static final int DELAY_TIME = 5; //스플래시 화면 지연 시간 정의
 
@@ -71,20 +72,17 @@ public class SplashActivity extends AppCompatActivity {
                     try {
                         while (i <= DELAY_TIME && !Thread.currentThread().isInterrupted()) {
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    switch (delayCnt) {
-                                        case 1:
-                                            loadingText.setText(getString(R.string.splash_loading_text) + " .");
-                                            break;
-                                        case 2:
-                                            loadingText.setText(getString(R.string.splash_loading_text) + " . .");
-                                            break;
-                                        case 3:
-                                            loadingText.setText(getString(R.string.splash_loading_text) + " . . .");
-                                            break;
-                                    }
+                            runOnUiThread(() -> {
+                                switch (delayCnt) {
+                                    case 1:
+                                        loadingText.setText(String.format("%s .", getString(R.string.splash_loading_text)));
+                                        break;
+                                    case 2:
+                                        loadingText.setText(String.format("%s . .", getString(R.string.splash_loading_text)));
+                                        break;
+                                    case 3:
+                                        loadingText.setText(String.format("%s . . .", getString(R.string.splash_loading_text)));
+                                        break;
                                 }
                             });
                             delayCnt = (delayCnt % DELAY_COUNT) + 1;
@@ -112,16 +110,13 @@ public class SplashActivity extends AppCompatActivity {
                 });
             animationThread.start();
                 // 네트워크 체크 후 데이터 가져오는 작업 스레드 시작
-                Thread dataThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //네트워크 체크 후 로직 실행
-                        if (!isNetworkConnected(SplashActivity.this)) { // 인터넷 연결 X
-                            Log.d("TAG", "run: 인터넷 연결이 원활하지 않아 db의 데이터로 호출");
-                        } else { // 인터넷 연결 O
-                            getApiData();
-                            animationThread.interrupt();
-                        }
+                Thread dataThread = new Thread(() -> {
+                    //네트워크 체크 후 로직 실행
+                    if (isNetworkConnected(SplashActivity.this)) { // 인터넷 연결 X
+                        Log.d("TAG", "run: 인터넷 연결이 원활하지 않아 db의 데이터로 호출");
+                    } else { // 인터넷 연결 O
+                        getApiData();
+                        animationThread.interrupt();
                     }
                 });
             dataThread.start();
@@ -132,26 +127,26 @@ public class SplashActivity extends AppCompatActivity {
         public static boolean isNetworkConnected(Activity activity) {
             ConnectivityManager manager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
             Network currentNetwork = manager.getActiveNetwork();
-            return currentNetwork != null;
+            return currentNetwork == null;
         }
 
         //api
         public void getApiData() {
             //Dog API에서 값 가져오기
             Call<ArrayList<DogDto>> call = RetrofitClient.getApiService().getApiData(BuildConfig.DOG_API_KEY, "500");
-            call.enqueue(new Callback<ArrayList<DogDto>>() {
+            call.enqueue(new Callback<>() {
                 @Override
-                public void onResponse(Call<ArrayList<DogDto>> call, Response<ArrayList<DogDto>> response) {
+                public void onResponse(@NonNull Call<ArrayList<DogDto>> call, @NonNull Response<ArrayList<DogDto>> response) {
                     ArrayList<DogDto> result = response.body(); //API에서 받아온 값 result에 담기
 
                     //Dog API에서 받아온 값 room의 DogData Entity가 null이면 저장 아니면 update
                     if (db.getDogDao().getAll().isEmpty()) {
                         db.getDogDao().deleteAll(); //DB 초기화
-                        for (int i = 0; i < result.size(); i++) {
+                        for (int i = 0; i < Objects.requireNonNull(result).size(); i++) {
                             insertApiDataIntoDB(result.get(i));
                         }
                     } else {
-                        for (int i = 0; i < result.size(); i++) {
+                        for (int i = 0; i < Objects.requireNonNull(result).size(); i++) {
                             if (db.getDogDao().checkData2(result.get(i).getId()) == 0) {
                                 insertApiDataIntoDB(result.get(i));
                             }
@@ -163,7 +158,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<DogDto>> call, Throwable t) {
+                public void onFailure(@NonNull Call<ArrayList<DogDto>> call, @NonNull Throwable t) {
                     Log.d("TAG", "onFailure: API 호출 실패");
                 }
             });
