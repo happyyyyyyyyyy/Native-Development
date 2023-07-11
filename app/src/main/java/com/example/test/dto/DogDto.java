@@ -18,9 +18,10 @@ public class DogDto {
     boolean bookmark_check;
     int bookmark_img;
     int index;
+    int viewType;
 
 
-    public DogDto(int id, String name, String bred_for, String temperament, String lifeSpan, boolean bookmark_check, int bookmark_img, int index) {
+    public DogDto(int id, String name, String bred_for, String temperament, String lifeSpan, boolean bookmark_check, int bookmark_img, int index, int viewType) {
         this.id = id;
         this.name = name;
         this.bred_for = bred_for;
@@ -31,7 +32,10 @@ public class DogDto {
         this.bookmark_check = bookmark_check;
         this.bookmark_img = bookmark_img;
         this.index = index;
-
+        this.viewType = viewType;
+    }
+    public DogDto(int viewType){
+        this.viewType = viewType;
     }
 
     public DogDto(DogDto other) {
@@ -46,7 +50,8 @@ public class DogDto {
         this.bookmark_img = other.bookmark_img;
         this.index = other.index;
     }
-
+    public int getViewType(){return viewType;}
+    public void setViewType(int viewType){this.viewType = viewType;}
     public DogImage getImage() {
         return image;
     }
