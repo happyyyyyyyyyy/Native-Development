@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import Interface.OnListItemSelectedInterface;
+import Interface.OnListItemSelecteListener;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private OnListItemSelectedInterface listener = null;
+    private OnListItemSelecteListener listener = null;
     private Context context;
     private final ArrayList<DogDto> homeItemList;
     private enum ViewType{
@@ -77,7 +77,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return homeItemList.get(position) == null ? ViewType.LOADING.value : ViewType.ITEM.value;
     }
 
-    public void setListener(OnListItemSelectedInterface listener){
+    public void setListener(OnListItemSelecteListener listener){
         this.listener = listener;
     }
 

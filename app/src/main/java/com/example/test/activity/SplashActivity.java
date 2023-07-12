@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,9 +52,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private void initialize(){
         loadingText = findViewById(R.id.textLoading);
-        ImageView splashImageView = findViewById(R.id.icon);
-        //스플래시 화면에 있는 원형 아이콘 처리
-        splashImageView.setImageResource(R.drawable.splash_icon);
         intent = new Intent(SplashActivity.this, MainActivity.class);
     }
 

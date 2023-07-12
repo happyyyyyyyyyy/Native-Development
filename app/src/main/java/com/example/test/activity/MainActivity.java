@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNetworkWarningDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(R.string.main_dialog_text)
-                .setPositiveButton("OK", null).show();
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage(R.string.main_dialog_text)
+                .setPositiveButton("OK", null)
+                .show();
     }
 }

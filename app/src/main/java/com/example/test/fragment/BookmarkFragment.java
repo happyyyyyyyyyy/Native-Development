@@ -27,11 +27,11 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import Interface.OnBookmarkListItemSelectedInterface;
+import Interface.OnBookmarkListItemSelecteListener;
 import adapter.BookMarkAdapter;
 
 
-public class BookmarkFragment extends Fragment implements OnBookmarkListItemSelectedInterface {
+public class BookmarkFragment extends Fragment implements OnBookmarkListItemSelecteListener {
 
     private BookMarkAdapter bookmarkAdapter;
     private Context ct;

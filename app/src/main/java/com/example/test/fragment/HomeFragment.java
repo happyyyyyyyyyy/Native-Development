@@ -32,11 +32,11 @@ import com.example.test.room.DogDataDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import Interface.OnListItemSelectedInterface;
+import Interface.OnListItemSelecteListener;
 import adapter.HomeAdapter;
 
 
-public class HomeFragment extends Fragment implements OnListItemSelectedInterface {
+public class HomeFragment extends Fragment implements OnListItemSelecteListener {
     private RecyclerView recyclerView;
     private HomeAdapter homeAdapter;
     private Context ct;
