@@ -21,7 +21,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true">

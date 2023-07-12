@@ -1,6 +1,6 @@
 package Interface;
 
-public interface OnBookmarkListItemSelecteListener {
+public interface OnBookmarkListItemSelectListener {
 
     void onDogImageClick(int id, String imgUrl, int position);
 

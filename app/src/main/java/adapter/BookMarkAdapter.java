@@ -18,15 +18,15 @@ import com.example.test.dto.BookmarkDto;
 import java.util.ArrayList;
 import java.util.List;
 
-import Interface.OnBookmarkListItemSelecteListener;
+import Interface.OnBookmarkListItemSelectListener;
 
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ItemViewHolder> {
 
-    private final OnBookmarkListItemSelecteListener mListener;
+    private final OnBookmarkListItemSelectListener mListener;
     Context mContext;
     private final ArrayList<BookmarkDto> bookmarkItemList;
 
-    public BookMarkAdapter(Context context, OnBookmarkListItemSelecteListener mListener) {
+    public BookMarkAdapter(Context context, OnBookmarkListItemSelectListener mListener) {
         this.mContext = context;
         this.mListener = mListener;
         bookmarkItemList = new ArrayList<>();

@@ -67,7 +67,6 @@ public class SplashActivity extends AppCompatActivity {
                 public void run() {
                     try {
                         while (i <= DELAY_TIME && !Thread.currentThread().isInterrupted()) {
-
                             runOnUiThread(() -> {
                                 switch (delayCnt) {
                                     case 1:
