@@ -11,7 +11,7 @@
     <string name="home_no_search_results">No search results . . .</string>
 
     <!-- Bookmark Screen -->
-
+    <string name="bookmark_total_text"> results in bookmark</string>
 
     <!-- Information Screen -->
     <string name="information_temperant"> Temperant</string>
@@ -21,6 +21,7 @@
     <string name="information_weight_height">" Weight/Height"</string>
     <string name="information_show_more">Show more information</string>
     <string name="information_dog_image">Dog Image</string>
+    <string name="information_dog_weight_height">avg. %1$skg / %2$scm</string>
 
     <!-- Home Item List -->
     <string name="home_list_bookmark_button">Bookmark Button</string>

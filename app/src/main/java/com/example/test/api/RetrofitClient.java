@@ -11,8 +11,8 @@ public class RetrofitClient {
     private static final String BASE_URL = "https://api.thedogapi.com/";
 
 
-    public static RetrofitInterface getApiService() {
-        return getInstance().create(RetrofitInterface.class);
+    public static DogAPIService getApiService() {
+        return getInstance().create(DogAPIService.class);
     }
 
     private static Retrofit getInstance() {

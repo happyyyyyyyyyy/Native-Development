@@ -10,7 +10,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface RetrofitInterface {
+public interface DogAPIService {
 
     //id로 api data 검색 후 결과 get
     @GET("v1/breeds/{UserID}")

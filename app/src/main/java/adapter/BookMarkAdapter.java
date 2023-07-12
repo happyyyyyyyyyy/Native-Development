@@ -18,15 +18,15 @@ import com.example.test.dto.BookmarkDto;
 import java.util.ArrayList;
 import java.util.List;
 
-import Interface.onBookmarkListItemSelectedInterface;
+import Interface.OnBookmarkListItemSelectedInterface;
 
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ItemViewHolder> {
 
-    private final onBookmarkListItemSelectedInterface mListener;
+    private final OnBookmarkListItemSelectedInterface mListener;
     Context mContext;
-    private ArrayList<BookmarkDto> bookmarkItemList = null;
+    private final ArrayList<BookmarkDto> bookmarkItemList;
 
-    public BookMarkAdapter(Context context, onBookmarkListItemSelectedInterface mListener) {
+    public BookMarkAdapter(Context context, OnBookmarkListItemSelectedInterface mListener) {
         this.mContext = context;
         this.mListener = mListener;
         bookmarkItemList = new ArrayList<>();
@@ -58,8 +58,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ItemVi
     }
 
     public ArrayList<BookmarkDto> getBookmarkItemList() {
-        ArrayList<BookmarkDto> target = new ArrayList<>(bookmarkItemList);
-        return target;
+        return new ArrayList<>(bookmarkItemList);
     }
 
     public void setItems(List<BookmarkDto> items) {
@@ -80,12 +79,10 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ItemVi
             bookmarkImg = itemView.findViewById(R.id.bookmarkImage);
 
             //이미지 클릭 시 상세정보로 넘어가는 이벤트 구현
-            bookmarkImg.setOnClickListener(view -> {
-                mListener.changeScreen(bookmarkItemList.get(getAdapterPosition()).getId(), bookmarkItemList.get(getAdapterPosition()).getImg(), getAdapterPosition());
-            });
+            bookmarkImg.setOnClickListener(view -> mListener.onDogImageClick(bookmarkItemList.get(getAdapterPosition()).getId(), bookmarkItemList.get(getAdapterPosition()).getImg(), getAdapterPosition()));
             //이미지 길게 클릭 시 북마크에서 삭제하는 이벤트 구현
             bookmarkImg.setOnLongClickListener(view -> {
-                mListener.deleteBookmark(bookmarkItemList.get(getAdapterPosition()).getId(), getAdapterPosition());
+                mListener.onDogImageLongClick(bookmarkItemList.get(getAdapterPosition()).getId(), getAdapterPosition());
                 return false;
             });
         }

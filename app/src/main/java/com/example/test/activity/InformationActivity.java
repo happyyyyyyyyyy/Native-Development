@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,7 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InformationActivity extends AppCompatActivity {
-    private Call<DogDto> call;
+    private final String SEARCH_URL = "https://www.google.com/search?q=";
+
     private ImageView dogImg;
     private ImageButton bookmarkButton;
     private TextView dogBredFor;
@@ -85,17 +85,14 @@ public class InformationActivity extends AppCompatActivity {
     private void initializeBookmarkButton(){
         bookmarkButton = findViewById(R.id.bookmarkButton);
         //북마크 버튼 클릭 시 이벤트 처리
-        bookmarkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isBookmark = db.getDogDao().checkData(id);
-                if (isBookmark) {
-                    bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
-                    db.getDogDao().updateBookmarkCheck(false, id);
-                } else {
-                    bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
-                    db.getDogDao().updateBookmarkCheck(true, id);
-                }
+        bookmarkButton.setOnClickListener(view -> {
+            boolean isBookmark = db.getDogDao().checkData(id);
+            if (isBookmark) {
+                bookmarkButton.setImageResource(R.drawable.unselected_bookmark_icon);
+                db.getDogDao().updateBookmarkCheck(false, id);
+            } else {
+                bookmarkButton.setImageResource(R.drawable.selected_bookmark_icon);
+                db.getDogDao().updateBookmarkCheck(true, id);
             }
         });
     }
@@ -118,10 +115,10 @@ public class InformationActivity extends AppCompatActivity {
 
     public void setApiData(){
         //API로 상세 정보 데이터 GET
-        call = RetrofitClient.getApiService().getSearchData(BuildConfig.DOG_API_KEY, id + "");
+        Call<DogDto> call = RetrofitClient.getApiService().getSearchData(BuildConfig.DOG_API_KEY, id + "");
         call.enqueue(new Callback<DogDto>() {
             @Override
-            public void onResponse(Call<DogDto> call, Response<DogDto> response) {
+            public void onResponse(@NonNull Call<DogDto> call, @NonNull Response<DogDto> response) {
 
                 Log.d("TAG", "onResponse: " + response.body().getBred_for());
                 if (Objects.isNull(response.body().getBred_for()) || response.body().getBred_for().isEmpty()) {
@@ -133,12 +130,7 @@ public class InformationActivity extends AppCompatActivity {
                 toolbar.setTitle(response.body().getName());
 
                 //하단 버튼 클릭 시 구글에 검색해주는 이벤트 구현
-                moreButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        searchUrl(response);
-                    }
-                });
+                moreButton.setOnClickListener(view -> searchUrl(response));
 
                 dogWeightHeight.setText(calculateAvg(response));
 
@@ -149,7 +141,7 @@ public class InformationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DogDto> call, Throwable t) {
+            public void onFailure(@NonNull Call<DogDto> call, @NonNull Throwable t) {
                 Log.d("TAG", "onFailure: API 호출 실패");
             }
         });
@@ -158,7 +150,7 @@ public class InformationActivity extends AppCompatActivity {
 
     //강아지 상세 정보 google에 검색해서 띄워주는 기능 구현
     public void searchUrl(Response<DogDto> response){
-        String url = "https://www.google.com/search?q=" + response.body().getName();
+        String url = SEARCH_URL + response.body().getName();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
@@ -174,10 +166,9 @@ public class InformationActivity extends AppCompatActivity {
         if (response.body().getHeight().getMetric().contains("-")){
             avgHeight = response.body().getHeight().getHeightAvg().toString();
         }
-        String result = "avg. " + avgWeight + "kg / " + avgHeight + "cm";
-        return result;
+        return String.format(getResources().getString(R.string.information_dog_weight_height), avgWeight, avgHeight);
     }
-    
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
