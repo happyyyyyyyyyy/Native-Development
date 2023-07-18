@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.InformationActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/splash_screen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title=""
+        app:titleTextColor="@color/black" />
+
+
+    <ImageView
+        android:id="@+id/dogImg"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="30dp"
+        android:scaleType="center"
+        app:layout_constraintEnd_toStartOf="@id/bookmarkButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"
+        tools:src="@drawable/test"
+        android:contentDescription="@string/information_dog_image" />
+
+    <ImageButton
+        android:id="@+id/bookmarkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:contentDescription="@string/information_bookmark_button"
+        android:src="@drawable/unselected_bookmark_icon"
+        app:layout_constraintBottom_toBottomOf="@id/dogImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dogImg"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/bredFor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/information_bred_for"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/dogImg"
+        app:drawableStartCompat="@drawable/text_foot_icon" />
+
+    <TextView
+        android:id="@+id/bredForData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/bredFor"
+        tools:text="example" />
+
+    <TextView
+        android:id="@+id/lifeSpan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/information_life_span"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/bredForData"
+        app:drawableLeftCompat="@drawable/text_foot_icon" />
+
+    <TextView
+        android:id="@+id/lifeSpanData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/lifeSpan"
+        tools:text="example" />
+
+    <TextView
+        android:id="@+id/temperant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/information_temperant"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/lifeSpanData"
+        app:drawableLeftCompat="@drawable/text_foot_icon" />
+
+    <TextView
+        android:id="@+id/temperantData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/temperant"
+        tools:text="example" />
+
+    <TextView
+        android:id="@+id/weightAndHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/information_weight_height"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/temperantData"
+        app:drawableLeftCompat="@drawable/text_foot_icon" />
+
+    <TextView
+        android:id="@+id/weightAndheightData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/dogImg"
+        app:layout_constraintTop_toBottomOf="@id/weightAndHeight"
+        tools:text="example" />
+
+    <Button
+        android:id="@+id/moreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="@string/information_show_more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

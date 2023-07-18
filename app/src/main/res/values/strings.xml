@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">Test</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_splashicon">SplashIcon</string>
+
+    <!-- Home Screen -->
+    <string name="home_no_search_results">No search results . . .</string>
+
+    <!-- Bookmark Screen -->
+    <string name="bookmark_total_text"> results in bookmark</string>
+
+    <!-- Information Screen -->
+    <string name="information_temperant"> Temperant</string>
+    <string name="information_bred_for"> Bred for</string>
+    <string name="information_bookmark_button">Bookmark Button</string>
+    <string name="information_life_span"> Life span</string>
+    <string name="information_weight_height">" Weight/Height"</string>
+    <string name="information_show_more">Show more information</string>
+    <string name="information_dog_image">Dog Image</string>
+    <string name="information_dog_weight_height">avg. %1$skg / %2$scm</string>
+
+    <!-- Home Item List -->
+    <string name="home_list_bookmark_button">Bookmark Button</string>
+    <string name="home_list_bred_for">멍멍이 품종</string>
+    <string name="home_list_name">멍멍이 이름</string>
+    <string name="home_list_dog_image">Dog Image</string>
+
+    <!-- Bookmark Item List -->
+    <string name="bookmark_list_bookmarkdogimage">BookmarkDogImage</string>
+
+    <!-- SplashActivity -->
+    <string name="splash_no_data_text">저장된 데이터가 없으므로\n네트워크 연결 후 다시 실행해주세요.</string>
+    <string name="splash_loading_text">Loading</string>
+
+    <!-- MainActivity -->
+    <string name="main_dialog_text">네트워크 연결이 원활하지 않아\n이미지가 로딩되지 않을 수도 있습니다.</string>
+
 </resources>
